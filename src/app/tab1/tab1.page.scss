@@ -1,0 +1,45 @@
+ion-card{
+    margin: 20px;
+    --background: rgb(255, 255, 255);
+    --color: rgb(0, 0, 0);
+    border-left: royalblue 5px solid;
+
+    ion-card-content{
+        display: flex;
+        flex-direction: row;
+
+        .left{
+            .name{
+                color: royalblue;
+            }
+            
+        }
+
+        .right{
+            margin-left: auto;
+            .logo{
+                size: 16px;
+            }
+        }
+    }
+    
+}
+
+.all{
+    width: 100%;
+    .data{
+        ion-list{
+            ion-item-group{
+                ion-item{
+                    display: flex;
+                    flex-direction: row;
+
+                    .money{
+                        margin-left: auto;
+                        color: royalblue;
+                    }
+                }
+            }
+        }
+    }
+}

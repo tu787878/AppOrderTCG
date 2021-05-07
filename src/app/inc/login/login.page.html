@@ -1,0 +1,31 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/help">Hilfe</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="header">
+    <h1>Shop Hinzufügen</h1>
+    <img src="assets/login/logo.png" />
+  </div>
+
+  <form id="form">
+
+    <ion-item class="ion-margin-bottom">
+      <ion-input type="text" [(ngModel)]="input.domain" name="domain" placeholder="example.de"></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-input type="text" [(ngModel)]="input.code" name="code" placeholder="TCG-yourcodehere"></ion-input>
+    </ion-item>
+
+    <ion-button (click) ="addShop()" expand="block" shape="round">Weiter</ion-button>
+
+    <ion-text color="danger">
+      <h4>{{message}}</h4>
+    </ion-text>
+  </form>
+</ion-content>
