@@ -9,5 +9,29 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+  <div *ngIf="!data">
+
+  </div>
+  <div *ngIf="data">
+    <ion-item [routerLink]="['parent']">
+      <ion-label>Übergeordnete Kategorien</ion-label>
+      <ion-note slot="end" color="primary">{{data.parent}}</ion-note>
+    </ion-item>
+  
+    <ion-item [routerLink]="['category']">
+      <ion-label>Kategorien</ion-label>
+      <ion-note slot="end" color="secondary">{{data.category}}</ion-note>
+    </ion-item>
+  
+    <ion-item [routerLink]="['service']">
+      <ion-label>Services</ion-label>
+      <ion-note slot="end" color="tertiary">{{data.service}}</ion-note>
+    </ion-item>
+  
+    <ion-item [routerLink]="['employee']">
+      <ion-label>Miterbeiter</ion-label>
+      <ion-note slot="end" color="success">{{data.employee}}</ion-note>
+    </ion-item>
+  </div>
   
 </ion-content>

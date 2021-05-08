@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Service bearteiten</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveService()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="data">
+    <ion-item>
+      <ion-label>Name: </ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Beschreibung: </ion-label>
+      <ion-input [(ngModel)]="description"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Preis: </ion-label>
+      <ion-input [(ngModel)]="price"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Dauert: </ion-label>
+      <ion-range [(ngModel)]="time" pin snaps min="15" size="big" max="300" step="15">
+        <ion-text slot="end">{{time}} Min</ion-text>
+      </ion-range>
+    </ion-item>
+    <ion-item>
+      <ion-label>Kategorien</ion-label>
+      <ion-select [(ngModel)]="category_id" placeholder="wählen">
+        <div *ngFor="let category of data.category">
+          <ion-select-option [value]="category.category_id">{{category.name}}</ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="status" allow-empty-selection="false" name="radio-group">
+        <ion-list-header>
+          <ion-label>Status</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Aktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="1"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deaktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="2"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+  </div>
+
+  
+</ion-content>

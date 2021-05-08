@@ -26,8 +26,8 @@ export class AppComponent {
     await this.storage.create();
 
     this.storage.get('shops').then((val) => {
+      console.log(val.length);
       if (val.length == 0) {
-        console.log(val.length);
         this.auth.setAuthenticated(false);
       } else {
         this.storage.get('active_shop').then((index) => {

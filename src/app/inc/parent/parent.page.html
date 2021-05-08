@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-icon [routerLink]="['new-parent']" style="font-size: 30px;margin-right: 5px;" name="add-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>Übergeordnete Kategorien</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="data">
+    <ion-list>
+      <div class="item" *ngFor="let parent of data.parent">
+        <ion-item-sliding *ngIf="parent.parent_category_id != 'all'">
+          <ion-item (click) = "toDetails(parent.parent_category_id)">
+            <ion-label>
+              {{parent.name}}
+            </ion-label>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option (click)="toDetails(parent.parent_category_id)" color="primary">
+              <ion-icon slot="top" ios="ellipsis-horizontal" md="ellipsis-vertical"></ion-icon>
+              Bearbeiten
+            </ion-item-option>
+            <ion-item-option (click)="deleteCategory(parent.parent_category_id)" color="danger">
+              <ion-icon slot="top" name="archive"></ion-icon>
+              Löschen
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </div>
+    </ion-list>
+  </div>
+ 
+</ion-content>

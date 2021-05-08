@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Übergeordnete ‚Kategorie erstellen</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveParent()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="data">
+    <ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Übergeordnete Kategorien</ion-label>
+      <ion-select [(ngModel)]="parent_category_id" placeholder="wählen">
+        <div *ngFor="let parent of data.parent">
+          <ion-select-option *ngIf="parent.parent_category_id != 'all'" [value]="parent.parent_category_id">{{parent.name}}</ion-select-option>
+        </div>
+      </ion-select>
+    </ion-item>
+    <ion-list>
+      <ion-radio-group [(ngModel)]="status" allow-empty-selection="false" name="radio-group">
+        <ion-list-header>
+          <ion-label>Status</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Aktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="1"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deaktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="2"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+  </div>
+
+  
+</ion-content>
