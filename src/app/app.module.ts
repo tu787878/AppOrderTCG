@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { HttpClientModule } from '@angular/common/http';
-
+import { ColorPickerModule } from 'ngx-color-picker';
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -17,7 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     IonicModule.forRoot(), 
     AppRoutingModule, 
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    ColorPickerModule
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

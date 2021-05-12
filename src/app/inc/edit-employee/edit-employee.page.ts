@@ -1,23 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-new-parent',
-  templateUrl: './new-parent.page.html',
-  styleUrls: ['./new-parent.page.scss'],
+  selector: 'app-edit-employee',
+  templateUrl: './edit-employee.page.html',
+  styleUrls: ['./edit-employee.page.scss'],
 })
-export class NewParentPage implements OnInit {
+export class EditEmployeePage implements OnInit {
+  id;
   data;
-  name: string;
-  image;
-  status = "1";
-  private sub_url = "/wp-json/bookingtcg/v1/mobile/get/image_parent";
+  private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee";
   private head_url = "http://";
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
     private storage: Storage,
@@ -28,7 +27,10 @@ export class NewParentPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    this.getData();
+    this.route.queryParams.subscribe(params => {
+      this.id = params.id;
+      this.getData();
+    });
   }
 
   getData() {
@@ -37,11 +39,10 @@ export class NewParentPage implements OnInit {
         let access_token = shops[index].access_token;
 
         let url = this.head_url + shops[index].domain + this.sub_url;
-        let parameter = "?token=" + access_token;
+        let parameter = "?token=" + access_token + "&employee_id=" + this.id;
 
         this.http.get(url + parameter).subscribe((response) => {
           console.log(response);
-          
           if (response['status'] == "success") {
             this.data = response['data'];
           } else {
@@ -52,35 +53,27 @@ export class NewParentPage implements OnInit {
     });
   }
 
-  selectImage(event) {
-    let elements = document.getElementsByClassName('image');
-    for (let index = 0; index < elements.length; index++) {
-      const element = elements[index];
-      element.classList.remove("active");
-    }
-    event.srcElement.classList.add("active");
-    this.image = event.srcElement.id;
-    
-  }
 
-  saveParent() {
+  saveEmployee() {
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
-        let end_url = "/wp-json/bookingtcg/v1/mobile/new/parent";
+        let end_url = "/wp-json/bookingtcg/v1/mobile/update/employee";
         let url = this.head_url + shops[index].domain + end_url;
-        let parent_category_id = "PC" + (Date.now().toString(36) + Math.random().toString(36).substr(2)).substr(10);
-        console.log(parent_category_id);
         this.http.post(url, {
           access_token: access_token,
-          parent_category_id: parent_category_id,
-          name: this.name,
-          image: this.image
+          employee_id: this.data.detail.employee_id,
+          name: this.data.detail.name,
+          age: this.data.detail.age,
+          email: this.data.detail.email,
+          color: this.data.detail.color,
+          text_color: this.data.detail.text_color,
+          status: this.data.detail.status
         }).subscribe((response) => {
             console.log(response);
             if(response['status'] == "success"){
               this.toastSuccess();
-              this.router.navigate(['tabs', 'tab3', 'parent']);
+              this.router.navigate(['tabs', 'tab3', 'employee']);
             } else {
               this.toastFailed();
             }
@@ -96,7 +89,7 @@ export class NewParentPage implements OnInit {
 
   async toastSuccess() {
     const toast = await this.toastController.create({
-      message: 'Kategorie wurde gespeichern!',
+      message: 'Mitarbeiter wurde gespeichern!',
       duration: 2000,
       color: 'success'
     });
@@ -113,5 +106,26 @@ export class NewParentPage implements OnInit {
   }
   ngOnInit() {
   }
+
+  toTimeManager(employee_id) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: this.data.detail.employee_id
+      }
+    };
+    console.log(navigationExtras)
+    this.router.navigate(['tabs', 'tab3', 'employee', 'edit-employee', 'time-manager'], navigationExtras);
+  }
+
+  toServicesManager(employee_id) {
+    let navigationExtras: NavigationExtras = {
+      queryParams: {
+        id: this.data.detail.employee_id
+      }
+    };
+    console.log(navigationExtras)
+    this.router.navigate(['tabs', 'tab3', 'employee', 'edit-employee', 'services-manager'], navigationExtras);
+  }
+
 
 }

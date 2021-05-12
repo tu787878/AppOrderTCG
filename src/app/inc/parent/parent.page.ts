@@ -53,16 +53,16 @@ export class ParentPage implements OnInit {
     });
   }
 
-  deleteCategory(id: string) {
+  deleteParent(id: string) {
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
-        let end_url = "/wp-json/bookingtcg/v1/mobile/delete/category";
+        let end_url = "/wp-json/bookingtcg/v1/mobile/delete/parent";
         let url = this.head_url + shops[index].domain + end_url;
 
         this.http.post(url, {
           access_token: access_token,
-          category_id: id,
+          parent_category_id: id,
           
         }).subscribe((response) => {
             console.log(response);
@@ -81,10 +81,12 @@ export class ParentPage implements OnInit {
     });
   }
 
-  toDetails(id: string) {
+  toDetails(id: string, name, link) {
     let navigationExtras: NavigationExtras = {
       queryParams: {
-        id: id
+        id: id,
+        name: name,
+        image: link
       }
     };
     console.log(navigationExtras)
@@ -93,7 +95,7 @@ export class ParentPage implements OnInit {
 
   async toastSuccess() {
     const toast = await this.toastController.create({
-      message: 'Übergeordnete Kategorie wurde gelöscht',
+      message: 'Übergeordnete Kategorie wurde gelöscht!',
       duration: 2000,
       color: 'success'
     });

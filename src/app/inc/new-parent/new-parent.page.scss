@@ -1,0 +1,20 @@
+.images{
+    display: flex;
+    flex-wrap: wrap;
+    height: 200px;
+    overflow: scroll;
+    .image{
+        margin-right: 10px;
+        height: 40px;
+        width: 40px;
+        cursor: pointer;
+    }
+
+    .image:hover{
+        border: solid 2px rgb(92, 152, 227);
+    }
+
+    .image.active{
+        border: solid 3px rgb(92, 152, 227);
+    }
+}

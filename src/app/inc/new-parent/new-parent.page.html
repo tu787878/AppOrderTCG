@@ -17,29 +17,13 @@
       <ion-input [(ngModel)]="name"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Übergeordnete Kategorien</ion-label>
-      <ion-select [(ngModel)]="parent_category_id" placeholder="wählen">
-        <div *ngFor="let parent of data.parent">
-          <ion-select-option *ngIf="parent.parent_category_id != 'all'" [value]="parent.parent_category_id">{{parent.name}}</ion-select-option>
+      <ion-label>Image</ion-label>
+      <div class="images">
+        <div *ngFor="let img of data.parent" class="image">
+          <img class="image" id="{{img}}" (click)="selectImage($event)" src="assets/parent/{{img}}" alt="error">
         </div>
-      </ion-select>
+      </div>
     </ion-item>
-    <ion-list>
-      <ion-radio-group [(ngModel)]="status" allow-empty-selection="false" name="radio-group">
-        <ion-list-header>
-          <ion-label>Status</ion-label>
-        </ion-list-header>
-        <ion-item>
-          <ion-label>Aktivieren</ion-label>
-          <ion-radio slot="start" name="a" value="1"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>Deaktivieren</ion-label>
-          <ion-radio slot="start" name="a" value="2"></ion-radio>
-        </ion-item>
-  
-      </ion-radio-group>
-    </ion-list>
   </div>
 
   

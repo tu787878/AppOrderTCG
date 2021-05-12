@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Services verwalten</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveServices()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="data">
+    <ion-button (click)="blitz()" color="tertiary">Alles auswählen oder löschen</ion-button>
+    <div class="row" *ngFor="let category of data.category">
+      <div class="content">
+        <ion-item>
+          <ion-text color="secondary">
+            <h1>{{category.name}}</h1>
+          </ion-text>
+        </ion-item>
+        <ion-list>
+          <div class="item" *ngFor="let service of arrData">
+            <ion-item *ngIf="service.data.category_id == category.category_id">
+                <ion-label>
+                  {{service.data.name}}
+                </ion-label>
+                <ion-checkbox [(ngModel)]="arr[service.index]" color="primary"></ion-checkbox>
+            </ion-item>
+          </div>
+        </ion-list>
+      </div>
+      
+     </div>
+  </div>
+ 
+</ion-content>

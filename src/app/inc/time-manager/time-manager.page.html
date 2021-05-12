@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Zeit verwalten</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveTimes()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div *ngIf="data">
+    <h1 class="title">{{data.employee.name}}</h1>
+    <ion-button (click)="blitz()" color="tertiary">Von Shop kopieren</ion-button>
+    <div class="day" *ngFor="let d of day">
+      <h2>{{d.label}}</h2>
+      <ion-item>
+        <h5>Am Tag nicht arbeiten</h5>
+        <div>
+          <ion-checkbox [(ngModel)]="off[d.index]"  color="primary"></ion-checkbox>
+        </div>
+       
+      </ion-item>
+
+      <div *ngFor="let time of data.detail">
+        <div *ngIf="time.day_of_week == d.index" class="row">
+          <ion-item class="main">
+            <ion-label>Von</ion-label>
+            <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="time.start_time" placeholder="wählen"></ion-datetime>
+          </ion-item>
+          <ion-item class="main">
+            <ion-label>Bis</ion-label>
+            <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="time.end_time" placeholder="wählen"></ion-datetime>
+          </ion-item>
+          <ion-item class="sub">
+            <ion-icon (click)="deletePeriod(time.id)" name="close-circle-outline"></ion-icon>
+          </ion-item>
+        </div>
+      </div>
+      <p (click)="new_period(d.index)" class="new_period">Neue Zeile hinzufügen</p>
+      
+    </div>
+    
+  </div>
+</ion-content>

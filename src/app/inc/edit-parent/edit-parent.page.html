@@ -1,9 +1,31 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>edit-parent</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Übergeordnete ‚Kategorie erstellen</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveParent()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div *ngIf="data">
+    <ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-input [(ngModel)]="data.detail.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Image</ion-label>
+      <div class="images">
+        <div *ngFor="let img of data.parent" class="image">
+          <img *ngIf="img == data.detail.link_icon" class="image active" id="{{img}}" (click)="selectImage($event)" src="assets/parent/{{img}}" alt="error">
+          <img *ngIf="img != data.detail.link_icon" class="image" id="{{img}}" (click)="selectImage($event)" src="assets/parent/{{img}}" alt="error">
+        </div>
+      </div>
+    </ion-item>
+  </div>
 
+  
 </ion-content>

@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mitarbeiter</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveEmployee()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="data">
+    <ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-input [(ngModel)]="data.detail.name"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Alter:</ion-label>
+      <ion-input [(ngModel)]="data.detail.age"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Email:</ion-label>
+      <ion-input [(ngModel)]="data.detail.email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Farbe:</ion-label>
+      <input [(colorPicker)]="data.detail.color" [style.background]="data.detail.color"/>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Text-Farbe:</ion-label>
+      <input [(colorPicker)]="data.detail.text_color" [style.background]="data.detail.text_color"/>
+    </ion-item>
+
+    <ion-list>
+      <ion-radio-group [(ngModel)]="data.detail.status" allow-empty-selection="false" name="radio-group">
+        <ion-list-header>
+          <ion-label>Status</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-label>Aktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="work"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Deaktivieren</ion-label>
+          <ion-radio slot="start" name="a" value="off"></ion-radio>
+        </ion-item>
+  
+      </ion-radio-group>
+    </ion-list>
+    <ion-item>
+      <p (click)="toTimeManager(data.detail.employee_id)" class="link">Zeit verwaltung</p>
+    </ion-item>
+  
+    <ion-item>
+      <p (click)="toServicesManager(data.detail.employee_id)" class="link">Services verwaltung</p>
+    </ion-item>
+  </div>
+ 
+  
+  
+</ion-content>

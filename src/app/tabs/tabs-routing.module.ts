@@ -79,7 +79,34 @@ const routes: Routes = [
           },
           {
             path: 'employee',
-            loadChildren: () => import('../inc/employee/employee.module').then( m => m.EmployeePageModule)
+            children: [
+              {
+                path: '',
+                loadChildren: () => import('../inc/employee/employee.module').then( m => m.EmployeePageModule)
+              },
+              {
+                path: 'new-employee',
+                loadChildren: () => import('../inc/new-employee/new-employee.module').then( m => m.NewEmployeePageModule)
+              },
+              {
+                path: 'edit-employee',
+                children: [
+                  {
+                    path: '',
+                    loadChildren: () => import('../inc/edit-employee/edit-employee.module').then( m => m.EditEmployeePageModule)
+                  },
+                  {
+                    path: 'services-manager',
+                    loadChildren: () => import('../inc/services-manager/services-manager.module').then( m => m.ServicesManagerPageModule)
+                  },
+                  {
+                    path: 'time-manager',
+                    loadChildren: () => import('../inc/time-manager/time-manager.module').then( m => m.TimeManagerPageModule)
+                  },
+                ]
+              },
+            ]
+            
           }
           
         ]
