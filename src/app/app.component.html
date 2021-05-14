@@ -1,21 +1,31 @@
 <ion-app>
   <ion-router-outlet></ion-router-outlet>
-  <ion-menu side="start" content-id="main">
+  <ion-menu (ionWillOpen)="menuOpened()" (ionWillClose)="menuWillClose()" side="start" content-id="main">
     <ion-content>
-      <ion-list>
-        <div id="header">
-          <img src="assets/login/logo.png" />
-          <h3>{{shopname_active}}</h3>
-          <h5>{{domain_active}}</h5>
-        </div>
-        <ion-text color="success">
-          <h4>Shops:</h4>
-        </ion-text>
-        <ion-item *ngFor="let shop of shops">
-          <ion-icon name="mail" slot="start"></ion-icon>
-          <ion-label>{{shop.domain}}</ion-label>
-        </ion-item>
+      <div class="menu-header-bg"></div>
+      <div class="header-content">
+        <img src="{{logo_active}}" alt="">
+        <ion-label>
+          <h1>{{shopname_active}}</h1>
+          <p>{{domain_active}}</p>
+          <p (click)="logout()" class="link">Logout</p>
+        </ion-label>
+      </div>
+      <div class="action-button">
+        <ion-button (click)="toAddShop()">
+          <ion-icon slot="start" name="add"></ion-icon>Hinzufügen
+        </ion-button>
+      </div>
 
+      <ion-list class="menu-items" lines=none>
+        <div *ngFor="let s of shops">
+          <ion-item *ngIf="s.domain == domain_active" class="active">
+            <ion-icon name="link-outline"></ion-icon>{{s.domain}}
+          </ion-item>
+          <ion-item (click)="setActiveShop(s.domain)" *ngIf="s.domain != domain_active">
+            <ion-icon name="link-outline"></ion-icon>{{s.domain}}
+          </ion-item>
+        </div>
       </ion-list>
     </ion-content>
   </ion-menu>

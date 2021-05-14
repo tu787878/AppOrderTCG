@@ -13,7 +13,16 @@ const routes: Routes = [
       },
       {
         path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+          },
+          {
+            path: 'detail-event',
+            loadChildren: () => import('../inc/detail-event/detail-event.module').then( m => m.DetailEventPageModule)
+          },
+        ]
       },
       {
         path: 'tab3',
@@ -114,7 +123,28 @@ const routes: Routes = [
       },
       {
         path: 'tab4',
-        loadChildren: () => import('../tab4/tab4.module').then(m => m.Tab4PageModule)
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('../tab4/tab4.module').then(m => m.Tab4PageModule)
+          },
+          {
+            path: 'general',
+            loadChildren: () => import('../inc/general/general.module').then( m => m.GeneralPageModule)
+          },
+          {
+            path: 'time-shop',
+            loadChildren: () => import('../inc/time-shop/time-shop.module').then( m => m.TimeShopPageModule)
+          },
+          {
+            path: 'payment',
+            loadChildren: () => import('../inc/payment/payment.module').then( m => m.PaymentPageModule)
+          },
+          {
+            path: 'email-setting',
+            loadChildren: () => import('../inc/email-setting/email-setting.module').then( m => m.EmailSettingPageModule)
+          },
+        ]
       },
       {
         path: '',

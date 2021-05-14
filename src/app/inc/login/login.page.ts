@@ -11,9 +11,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private head_url = "http://";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/auth";
-  input = { domain: "bookingtcg.local", code: "TCG-ko5p4gas" };
+  input = { domain: "http://bookingtcg.local", code: "TCG-koe7inyn" };
   private loading;
   message: string = "";
   constructor(
@@ -24,7 +23,7 @@ export class LoginPage implements OnInit {
     private router: Router,
   ) 
   { 
-    let userTestStatus: { domain: string, shop_name: string, access_token:string }[] = [
+    let userTestStatus: { domain: string, shop_name: string, access_token:string, logo:string }[] = [
       
     ];
 
@@ -48,7 +47,7 @@ export class LoginPage implements OnInit {
   addShop(){
     this.presentLoading();
     let domain = this.input['domain']
-    let url = this.head_url + domain + this.sub_url;
+    let url = domain + this.sub_url;
     let code = this.input['code'];
 
     this.http.post(url, {
@@ -57,11 +56,16 @@ export class LoginPage implements OnInit {
         console.log(response);
         if(response['status'] == "success"){
           this.storage.get('shops').then((val) => {
-            let temp: { domain: string, shop_name: string, access_token:string } = 
-              { "domain" : domain, "shop_name":response['shop_name'], "access_token":response['access_token']}
+            let temp: { domain: string, shop_name: string, access_token:string, logo:string } = 
+            {
+              "domain": domain,
+              "shop_name": response['shop_name'],
+              "access_token": response['access_token'],
+              "logo": response['logo']
+            }
               ;
             if (val.length == 0) {
-              val.push(temp);
+                val.push(temp);
                 this.storage.set('shops', val);
                 this.storage.set('active_shop', 0);
                 this.authService.setAuthenticated(true);
@@ -95,4 +99,7 @@ export class LoginPage implements OnInit {
     );
   }
 
+  backToDashboard() {
+    this.router.navigate(["tabs/tab1"]);
+  }
 }

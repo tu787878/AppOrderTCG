@@ -2,7 +2,8 @@ ion-card{
     margin: 20px;
     --background: rgb(255, 255, 255);
     --color: rgb(0, 0, 0);
-    border-left: royalblue 5px solid;
+    border-radius: 10px;
+    box-shadow: 0px 3px 12px 2px rgba(0,0,0,0.16);
 
     ion-card-content{
         display: flex;

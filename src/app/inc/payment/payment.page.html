@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Zahlungsmethod</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon *ngIf="!new" (click)="new_payment()" style="font-size: 30px;margin-right: 5px;" name="add-outline"></ion-icon>
+      <ion-icon *ngIf="new" (click)="save_payment()" style="font-size: 30px;margin-right: 5px;" name="save-outline"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  <p>
+    <ion-chip *ngFor="let p of data.detail" outline color="secondary">
+      <ion-icon name="logo-paypal"></ion-icon>
+      <ion-label>{{p.name}}</ion-label>
+      <ion-icon class="delete" (click)="deletePayment(p.id)" name="close-circle"></ion-icon>
+    </ion-chip>
+  </p>
+
+  <div *ngIf="new">
+    <ion-item>
+      <ion-label>Name:</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+  </div>
+
+</ion-content>

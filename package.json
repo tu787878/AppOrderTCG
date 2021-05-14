@@ -25,6 +25,7 @@
     "@ionic/storage-angular": "^3.0.6",
     "cordova-plugin-filepath": "^1.6.0",
     "cordova-sqlite-storage": "^6.0.0",
+    "ion2-calendar": "^3.5.0",
     "ionic-color-picker": "^1.0.3",
     "list-files-in-dir": "^0.1.5",
     "moment": "^2.29.1",

@@ -29,10 +29,8 @@ ion-toolbar {
       }
   
       img {
-        width: 125px;
-        height: 125px;
-        border-radius: 50%;
-        border: 8px solid #ffffff;
+        width: 100px;
+        height: 100px;
       }
 
       ion-button{
@@ -85,3 +83,15 @@ ion-toolbar {
   ion-text{
     text-align: center;
   }
+.bot{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .back{
+    font-size: 14px;
+    color: red;
+  }
+
+}

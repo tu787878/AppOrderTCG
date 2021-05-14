@@ -13,7 +13,6 @@ import { ToastController } from '@ionic/angular';
 export class EditServicePage implements OnInit {
   id;
   data: any;
-  private head_url = "http://";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/service";
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +37,7 @@ export class EditServicePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.head_url + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&service_id=" + this.id;
 
         this.http.get(url + parameter).subscribe((response) => {
@@ -59,7 +58,7 @@ export class EditServicePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/service";
-        let url = this.head_url + shops[index].domain + end_url;
+        let url = shops[index].domain + end_url;
 
         this.http.post(url, {
           access_token: access_token,

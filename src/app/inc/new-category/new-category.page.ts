@@ -15,7 +15,6 @@ export class NewCategoryPage implements OnInit {
   name: string;
   parent_category_id: string;
   status = "1";
-  private head_url = "http://";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/parents";
   constructor(
     private router: Router,
@@ -36,7 +35,7 @@ export class NewCategoryPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.head_url + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
         this.http.get(url + parameter).subscribe((response) => {
@@ -57,7 +56,7 @@ export class NewCategoryPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/new/category";
-        let url = this.head_url + shops[index].domain + end_url;
+        let url = shops[index].domain + end_url;
         let category_id = "C" + (Date.now().toString(36) + Math.random().toString(36).substr(2)).substr(10);
         console.log(category_id);
         this.http.post(url, {

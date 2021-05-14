@@ -9,7 +9,7 @@
 <ion-content>
   <div id="header">
     <h1>Shop Hinzufügen</h1>
-    <img src="assets/login/logo.png" />
+    <img src="assets/login/tcg.png" />
   </div>
 
   <form id="form">
@@ -23,6 +23,9 @@
     </ion-item>
 
     <ion-button (click) ="addShop()" expand="block" shape="round">Weiter</ion-button>
+    <div class="bot">
+      <p (click)="backToDashboard()" class="back">Back</p>
+    </div>
 
     <ion-text color="danger">
       <h4>{{message}}</h4>

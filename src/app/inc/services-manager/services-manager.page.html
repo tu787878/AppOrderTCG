@@ -12,6 +12,7 @@
 
 <ion-content>
   <div *ngIf="data">
+    <h1>{{data.employee.name}}</h1>
     <ion-button (click)="blitz()" color="tertiary">Alles auswählen oder löschen</ion-button>
     <div class="row" *ngFor="let category of data.category">
       <div class="content">

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { AuthGuardService } from '../services/auth-guard.service';
 import { Storage } from '@ionic/storage';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab3',
@@ -10,12 +11,12 @@ import { Storage } from '@ionic/storage';
 })
 export class Tab3Page {
   data:any;
-  private head_url = "http://";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/manager";
   constructor(
     private http: HttpClient,
     private storage: Storage,
     private authService: AuthGuardService,
+    private router: Router,
   ) {
 
   }
@@ -27,10 +28,16 @@ export class Tab3Page {
   getData() {
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
+
+        if (shops.length == 0 || shops[index] == undefined) {
+          this.authService.setAuthenticated(false);
+          this.router.navigate(['login']);
+          return;
+        }
         let access_token = shops[index].access_token;
         
 
-        let url = this.head_url + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
         this.http.get(url + parameter).subscribe((response) => {

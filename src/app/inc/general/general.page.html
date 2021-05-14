@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Allgemein</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  
+  <ion-item>
+    <ion-label>Shop Name:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_name"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Adress:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_address"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Email:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Telefon:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_phone"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Benachrichtigung:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_noti"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>AGB Links:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_agb"></ion-input>
+  </ion-item>
+  
+  <ion-item>
+    <ion-label>Betreff Email:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_title_email"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Zusatzinformation:</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_extra_email"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Shop Farbe:</ion-label>
+    <input class="choose_color" [(colorPicker)]="data.detail.shop_color" [style.background]="data.detail.shop_color"/>
+  </ion-item>
+</ion-content>

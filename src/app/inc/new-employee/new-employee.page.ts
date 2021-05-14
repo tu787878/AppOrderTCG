@@ -20,7 +20,6 @@ export class NewEmployeePage implements OnInit {
   text_color = "";
   status = "work";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee";
-  private head_url = "http://";
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -45,7 +44,7 @@ export class NewEmployeePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/new/employee";
-        let url = this.head_url + shops[index].domain + end_url;
+        let url = shops[index].domain + end_url;
         
         let employee_id = "E" + (Date.now().toString(36) + Math.random().toString(36).substr(2)).substr(10);
         this.http.post(url, {

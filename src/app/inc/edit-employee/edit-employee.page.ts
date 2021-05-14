@@ -14,7 +14,6 @@ export class EditEmployeePage implements OnInit {
   id;
   data;
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee";
-  private head_url = "http://";
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -38,7 +37,7 @@ export class EditEmployeePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.head_url + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&employee_id=" + this.id;
 
         this.http.get(url + parameter).subscribe((response) => {
@@ -59,7 +58,7 @@ export class EditEmployeePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/employee";
-        let url = this.head_url + shops[index].domain + end_url;
+        let url = shops[index].domain + end_url;
         this.http.post(url, {
           access_token: access_token,
           employee_id: this.data.detail.employee_id,

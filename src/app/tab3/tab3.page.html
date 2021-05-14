@@ -13,22 +13,27 @@
 
   </div>
   <div *ngIf="data">
+    
     <ion-item [routerLink]="['parent']">
+      <ion-icon slot="start" name="color-filter-outline"></ion-icon>
       <ion-label>Übergeordnete Kategorien</ion-label>
       <ion-note slot="end" color="primary">{{data.parent}}</ion-note>
     </ion-item>
   
     <ion-item [routerLink]="['category']">
+      <ion-icon slot="start" name="copy-outline"></ion-icon>
       <ion-label>Kategorien</ion-label>
       <ion-note slot="end" color="secondary">{{data.category}}</ion-note>
     </ion-item>
   
     <ion-item [routerLink]="['service']">
+      <ion-icon slot="start" name="flower-outline"></ion-icon>
       <ion-label>Services</ion-label>
       <ion-note slot="end" color="tertiary">{{data.service}}</ion-note>
     </ion-item>
   
     <ion-item [routerLink]="['employee']">
+      <ion-icon slot="start" name="person-add-outline"></ion-icon>
       <ion-label>Miterbeiter</ion-label>
       <ion-note slot="end" color="success">{{data.employee}}</ion-note>
     </ion-item>

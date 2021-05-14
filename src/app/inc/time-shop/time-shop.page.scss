@@ -1,0 +1,30 @@
+
+.row{
+    display: flex;
+    width: 100%;
+    .main{
+        width: 40%;
+    }
+    .sub{
+        width: 20%;
+        ion-icon{
+            color: red;
+            cursor: pointer;
+        }
+    }
+}
+.title{
+    margin-left: 15px;
+}
+
+.day{
+    margin-left: 15px;
+    .new_period{
+        margin-left: 15px;
+        color: blue;
+        cursor: pointer;
+    }
+    ion-checkbox{
+        margin-left: 15px;
+    }
+}
