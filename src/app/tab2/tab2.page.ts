@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { HTTP } from '@ionic-native/http/ngx';
 import { ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
 import { CalendarComponentOptions } from 'ion2-calendar'
@@ -13,14 +14,17 @@ import { AuthGuardService } from '../services/auth-guard.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/events";
   date: string;
   data;
   d;
+  mess;
   type: 'moment'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
   options: CalendarComponentOptions = {
     color: 'primary',
     showMonthPicker: false,
+    from: new Date('1995-12-17T03:24:00')
   };
 
   constructor(
@@ -29,6 +33,7 @@ export class Tab2Page {
     private authService: AuthGuardService,
     private router: Router,
     public toastController: ToastController,
+    private http2: HTTP,
   ) { }
   
   changeDate($event) {
@@ -44,15 +49,24 @@ export class Tab2Page {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&date=" + d;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.router.navigate(['login']);
+
+          });
       });
     });
   }
@@ -80,6 +94,30 @@ export class Tab2Page {
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/event";
         let url = shops[index].domain + end_url;
         let action = (e.status === "wait") ? "erledigt" : "wait";
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          event_id: e.id,
+          action: action
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          this.mess = dt;
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.getData(this.d);
+            this.toastSuccess();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+          this.mess = error;
+          
+        });
+       /* 
         this.http.post(url, {
           access_token: access_token,
           event_id: e.id,
@@ -97,6 +135,8 @@ export class Tab2Page {
             this.toastFailed();
           }
         );
+
+        */
       });
     });
   }

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-edit-parent',
@@ -13,6 +14,7 @@ import { ToastController } from '@ionic/angular';
 export class EditParentPage implements OnInit {
   id;
   data;
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/parent";
   constructor(
     private route: ActivatedRoute,
@@ -21,6 +23,7 @@ export class EditParentPage implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     public toastController: ToastController,
+    private http2:HTTP
   ) {
     
   }
@@ -40,14 +43,24 @@ export class EditParentPage implements OnInit {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&parent_id=" + this.id;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
       });
     });
   }
@@ -68,6 +81,29 @@ export class EditParentPage implements OnInit {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/parent";
         let url = shops[index].domain + end_url;
+
+        this.http2.post(url, {
+          access_token: access_token,
+          parent_category_id: this.data.detail.parent_category_id,
+          name: this.data.detail.name,
+          image: this.data.detail.link_icon
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+              this.router.navigate(['tabs', 'tab3', 'parent']);
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+        /*
+        
         this.http.post(url, {
           access_token: access_token,
           parent_category_id: this.data.detail.parent_category_id,
@@ -86,6 +122,8 @@ export class EditParentPage implements OnInit {
             this.toastFailed();
           }
         );
+
+        */
       });
     });
    

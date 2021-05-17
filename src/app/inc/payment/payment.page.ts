@@ -14,6 +14,8 @@ export class PaymentPage implements OnInit {
   new = false;
   name = "";
   data: any;
+  private cors = "https://cors-anywhere.herokuapp.com/";
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/payment_method";
   constructor(
     private http: HttpClient,
@@ -37,7 +39,7 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = shops[index].domain + this.sub_url;
+        let url = this.cors + shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
         this.http.get(url + parameter).subscribe((response) => {
@@ -58,7 +60,7 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/delete/payment";
-        let url = shops[index].domain + end_url;
+        let url = this.cors + shops[index].domain + end_url;
 
         this.http.post(url, {
           access_token: access_token,
@@ -107,7 +109,7 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/new/payment";
-        let url = shops[index].domain + end_url;
+        let url = this.cors + shops[index].domain + end_url;
 
         this.http.post(url, {
           access_token: access_token,

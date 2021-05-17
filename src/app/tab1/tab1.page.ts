@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import * as moment from 'moment';
 import { AuthGuardService } from '../services/auth-guard.service';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -15,12 +16,15 @@ export class Tab1Page{
   von = '';
   bis = '';
   status = 'all';
+  message;
+  message2;
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/dashboard";
   constructor(
     private http: HttpClient,
     private storage: Storage,
     private authService: AuthGuardService,
     private router: Router,
+    private http2: HTTP,
   ) {
 
   }
@@ -34,6 +38,8 @@ export class Tab1Page{
   }
 
   public getData() {
+   
+    
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         if (shops.length == 0 || shops[index] == undefined) {
@@ -53,7 +59,26 @@ export class Tab1Page{
         let parameter = "?token=" + access_token + "&status=" + this.status + "&von=" + this.von + "&bis=" + this.bis;
         console.log(parameter);
 
-        this.http.get(url + parameter).subscribe((response) => {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+
+            this.authService.setAuthenticated(false);
+            this.router.navigate(['login']);
+
+          });
+
+        /*
+        this.http.get(url + parameter,).subscribe((response) => {
           console.log(response);
           
           if (response['status'] == "success") {
@@ -63,8 +88,12 @@ export class Tab1Page{
             this.router.navigate(['login']);
           }
         });
+
+        */
       });
     });
+
+    
   }
 
 }

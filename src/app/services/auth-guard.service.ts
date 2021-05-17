@@ -1,21 +1,37 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuardService {
-  private authenticated: boolean = true;
-  constructor(private router: Router) {}
+  private authenticated: boolean = false;
+  constructor(
+    private router: Router,
+    private storage: Storage,
+  ) {
+    
+  }
+  ionViewWillEnter() {
+    
+  }
 
-  canActivate(route: ActivatedRouteSnapshot): boolean {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    
+  ): Promise<boolean> {
 
-    if (!this.authenticated) {
-      this.router.navigate(["login"]);
-      return false;
-    }
-
-    return true;
+    return this.storage.get('shops').then(shops => {
+      if (shops.length > 0) {
+        this.authenticated = true;
+        return true;
+      }
+      this.authenticated = false;
+      this.router.navigate(['/login']);
+      return true;
+    });
+   
   }
 
   setAuthenticated(status: boolean) {

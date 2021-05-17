@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 
 @Component({
@@ -56,6 +57,7 @@ export class TimeManagerPage implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     public toastController: ToastController,
+    private http2:HTTP
   ) {
     
   }
@@ -75,6 +77,35 @@ export class TimeManagerPage implements OnInit {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&employee_id=" + this.id;
 
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            for (let i = 0; i < 7; i++){
+              for (let j = 0; j < this.data.detail.length; j++){
+                let e = this.data.detail[j];
+                if (e.day_of_week == "" + i) {
+                  this.off[i] = e.off_day == "1" ? true:false;
+                  j = this.data.detail.lengt;
+                } 
+              }
+            }
+            console.log(this.off);
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+            this.authService.setAuthenticated(false);
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
+        /*
         this.http.get(url + parameter).subscribe((response) => {
           console.log(response);
           if (response['status'] == "success") {
@@ -93,6 +124,7 @@ export class TimeManagerPage implements OnInit {
             this.authService.setAuthenticated(false);
           }
         });
+        */
       });
     });
   }
@@ -121,7 +153,28 @@ export class TimeManagerPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/employee_times";
-        let url = shops[index].domain + end_url;
+        let url =  shops[index].domain + end_url;
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          employee_id: this.data.employee.employee_id,
+          times: this.data.detail
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+              this.router.navigate(['tabs', 'tab3', 'employee']);
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           employee_id: this.data.employee.employee_id,
@@ -140,6 +193,7 @@ export class TimeManagerPage implements OnInit {
             this.toastFailed();
           }
         );
+        */
       });
     });
    

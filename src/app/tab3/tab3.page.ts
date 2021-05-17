@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AuthGuardService } from '../services/auth-guard.service';
 import { Storage } from '@ionic/storage';
 import { Router } from '@angular/router';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-tab3',
@@ -10,13 +11,15 @@ import { Router } from '@angular/router';
   styleUrls: ['tab3.page.scss']
 })
 export class Tab3Page {
-  data:any;
+  data: any;
+  
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/manager";
   constructor(
     private http: HttpClient,
     private storage: Storage,
     private authService: AuthGuardService,
     private router: Router,
+    private http2: HTTP
   ) {
 
   }
@@ -40,15 +43,24 @@ export class Tab3Page {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.router.navigate(['login']);
+
+          });
       });
     });
   }

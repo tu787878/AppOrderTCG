@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-new-service',
@@ -18,6 +19,8 @@ export class NewServicePage implements OnInit {
   price = 0;
   category_id: string;
   status = "1";
+
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/categories";
   constructor(
     private router: Router,
@@ -25,6 +28,7 @@ export class NewServicePage implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     public toastController: ToastController,
+    private http2:HTTP
   ) {
     
   }
@@ -38,18 +42,27 @@ export class NewServicePage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = shops[index].domain + this.sub_url;
+        let url =  shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
       });
     });
   }
@@ -62,6 +75,32 @@ export class NewServicePage implements OnInit {
         let url = shops[index].domain + end_url;
         let service_id = "S" + (Date.now().toString(36) + Math.random().toString(36).substr(2)).substr(10);
         console.log(service_id);
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          service_id: service_id,
+          name: this.name,
+          category_id: this.category_id,
+          status: this.status,
+          description: this.description,
+          price: this.price,
+          time: this.time
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+              this.router.navigate(['tabs', 'tab3', 'service']);
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           service_id: service_id,
@@ -84,6 +123,8 @@ export class NewServicePage implements OnInit {
             this.toastFailed();
           }
         );
+
+        */
       });
     });
    

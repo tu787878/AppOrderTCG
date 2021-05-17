@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-edit-service',
@@ -21,6 +22,7 @@ export class EditServicePage implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     public toastController: ToastController,
+    private http2:HTTP
   ) {
     
   }
@@ -40,15 +42,24 @@ export class EditServicePage implements OnInit {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&service_id=" + this.id;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
       });
     });
   }
@@ -60,6 +71,30 @@ export class EditServicePage implements OnInit {
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/service";
         let url = shops[index].domain + end_url;
 
+        this.http2.post(url, {
+          access_token: access_token,
+          service_id: this.data.service.service_id,
+          name: this.data.service.name,
+          category_id: this.data.service.category_id,
+          status: this.data.service.status,
+          description: this.data.service.description,
+          price: this.data.service.price,
+          time: this.data.service.time
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           service_id: this.data.service.service_id,
@@ -81,6 +116,8 @@ export class EditServicePage implements OnInit {
             this.toastFailed();
           }
         );
+
+        */
       });
     });
    

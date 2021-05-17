@@ -4,6 +4,7 @@ import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { Storage } from '@ionic/storage';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-services-manager',
@@ -16,6 +17,7 @@ export class ServicesManagerPage implements OnInit {
   xxx = false;
   arr = new Array();
   arrData = new Array();
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee_service";
   constructor(
     private http: HttpClient,
@@ -24,6 +26,7 @@ export class ServicesManagerPage implements OnInit {
     private router: Router,
     public toastController: ToastController,
     private route: ActivatedRoute,
+    private http2:HTTP
   ) {
 
   }
@@ -46,6 +49,42 @@ export class ServicesManagerPage implements OnInit {
         let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&employee_id=" + this.id;
 
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+              for (let index = 0; index < this.data.service.length; index++) {
+                const element = this.data.service[index];
+  
+                this.arrData.push({
+                  index: index,
+                  data: element
+                })
+                this.arr[index] = false;
+                for (let i = 0; i < this.data.detail.length; i++) {
+                  const e = this.data.detail[i];
+                  if (e.service_id == element.service_id) {
+                    this.arr[index] = true;
+                    break;
+                  }
+                }
+  
+              }
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+            this.authService.setAuthenticated(false);
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
+        /*
         this.http.get(url + parameter).subscribe((response) => {
           console.log(response);
           
@@ -74,6 +113,7 @@ export class ServicesManagerPage implements OnInit {
             this.router.navigate(['login']);
           }
         });
+        */
       });
     });
   }
@@ -112,6 +152,27 @@ export class ServicesManagerPage implements OnInit {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/employee_service";
         let url = shops[index].domain + end_url;
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          employee_id: this.data.employee.employee_id,
+          services: this.data.detail
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+              this.router.navigate(['tabs', 'tab3', 'employee']);
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           employee_id: this.data.employee.employee_id,
@@ -130,6 +191,7 @@ export class ServicesManagerPage implements OnInit {
             this.toastFailed();
           }
         );
+        */
       });
     });
       

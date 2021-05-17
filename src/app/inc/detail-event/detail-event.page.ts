@@ -13,6 +13,8 @@ import { ToastController } from '@ionic/angular';
 export class DetailEventPage implements OnInit {
   id;
   data: any;
+  private cors = "https://cors-anywhere.herokuapp.com/";
+
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/event";
   constructor(
     private route: ActivatedRoute,
@@ -37,7 +39,7 @@ export class DetailEventPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = shops[index].domain + this.sub_url;
+        let url = this.cors + shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token + "&event_id=" + this.id;
 
         this.http.get(url + parameter).subscribe((response) => {
@@ -58,7 +60,7 @@ export class DetailEventPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/service";
-        let url = shops[index].domain + end_url;
+        let url = this.cors + shops[index].domain + end_url;
 
         this.http.post(url, {
           access_token: access_token,
