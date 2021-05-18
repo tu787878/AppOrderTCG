@@ -29,7 +29,7 @@ export class AppComponent {
     // If using a custom driver:
     // await this.storage.defineDriver(MyCustomDriver)
     await this.storage.create();
-
+    this.storage.set('shops', []);
     
   }
 

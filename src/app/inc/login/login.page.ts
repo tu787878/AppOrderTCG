@@ -13,9 +13,8 @@ import { HTTP } from '@ionic-native/http/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private cors = "https://cors-anywhere.herokuapp.com/";
   private sub_url = "/wp-json/bookingtcg/v1/mobile/auth";
-  input = { domain: "http://bookingtcg.local", code: "TCG-koe7inyn" };
+  input = { domain: "https://www.newyorknails.eu/", code: "TCG-kor0o4sb" };
   private loading;
   message;
   message2;
@@ -58,6 +57,7 @@ export class LoginPage implements OnInit {
       this.message2 = data.data;
       this.message2 = this.message2.split('<br />', 1);
       let response = JSON.parse(this.message2);
+      this.message2 = response.status;
       if (response.status == "success") {
         this.storage.get('shops').then((val) => {
           console.log(val);

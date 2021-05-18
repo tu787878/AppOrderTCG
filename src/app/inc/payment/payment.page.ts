@@ -4,6 +4,7 @@ import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { Storage } from '@ionic/storage';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-payment',
@@ -14,7 +15,7 @@ export class PaymentPage implements OnInit {
   new = false;
   name = "";
   data: any;
-  private cors = "https://cors-anywhere.herokuapp.com/";
+  mess;
 
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/payment_method";
   constructor(
@@ -23,6 +24,7 @@ export class PaymentPage implements OnInit {
     private authService: AuthGuardService,
     private router: Router,
     public toastController: ToastController,
+    private http2: HTTP
   ) {
 
   }
@@ -39,18 +41,27 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.cors + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.router.navigate(['login']);
+
+          });
       });
     });
   }
@@ -60,8 +71,30 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/delete/payment";
-        let url = this.cors + shops[index].domain + end_url;
+        let url =  shops[index].domain + end_url;
 
+        this.http2.post(url, {
+          access_token: access_token,
+          id: id 
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          this.mess = dt;
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.getData();
+            this.toastSuccess();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+          this.mess = error;
+          
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           id: id          
@@ -78,6 +111,7 @@ export class PaymentPage implements OnInit {
             this.toastFailed();
           }
         );
+        */
       });
     });
   }
@@ -109,8 +143,31 @@ export class PaymentPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/new/payment";
-        let url = this.cors + shops[index].domain + end_url;
+        let url =  shops[index].domain + end_url;
 
+        this.http2.post(url, {
+          access_token: access_token,
+          name: this.name
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          this.mess = dt;
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.getData();
+            this.toastSuccess();
+            this.name = "";
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+          this.mess = error;
+          
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           name: this.name
@@ -128,6 +185,7 @@ export class PaymentPage implements OnInit {
             this.toastFailed();
           }
         );
+        */
       });
     });
   }

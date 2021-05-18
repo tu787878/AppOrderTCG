@@ -4,6 +4,7 @@ import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { Storage } from '@ionic/storage';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-general',
@@ -13,7 +14,7 @@ import { ToastController } from '@ionic/angular';
 export class GeneralPage implements OnInit {
 
   data: any;
-  private cors = "https://cors-anywhere.herokuapp.com/";
+  mess;
 
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/general";
   constructor(
@@ -22,6 +23,7 @@ export class GeneralPage implements OnInit {
     private authService: AuthGuardService,
     private router: Router,
     public toastController: ToastController,
+    private http2: HTTP
   ) {
 
   }
@@ -38,18 +40,27 @@ export class GeneralPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.cors + shops[index].domain + this.sub_url;
+        let url =  shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;
 
-        this.http.get(url + parameter).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
             this.authService.setAuthenticated(false);
-          }
-        });
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
       });
     });
   }
@@ -59,8 +70,30 @@ export class GeneralPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/general";
-        let url = this.cors + shops[index].domain + end_url;
+        let url =  shops[index].domain + end_url;
 
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          detail: this.data.detail
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          this.mess = dt;
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+            this.getData();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+          this.mess = error;
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           detail: this.data.detail
@@ -78,6 +111,8 @@ export class GeneralPage implements OnInit {
             this.toastFailed();
           }
         );
+
+        */
       });
     });
   }

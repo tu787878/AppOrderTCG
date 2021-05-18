@@ -1,5 +1,5 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "me.halotu.bookingtcg",
   "appName": "myApp",
   "bundledWebRuntime": false,
   "npmClient": "npm",

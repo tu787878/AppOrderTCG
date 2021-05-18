@@ -17,6 +17,7 @@ export class ServicesManagerPage implements OnInit {
   xxx = false;
   arr = new Array();
   arrData = new Array();
+  mess;
 
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee_service";
   constructor(
@@ -143,7 +144,7 @@ export class ServicesManagerPage implements OnInit {
     for (let index = 0; index < this.arrData.length; index++) {
       const element = this.arrData[index];
       if (this.arr[index]) {
-        this.data.detail.push(element.data);
+        this.data.detail.push(element.data.service_id);
       }
     }
      
@@ -161,16 +162,18 @@ export class ServicesManagerPage implements OnInit {
         .then((data) => {
           console.log(data);
           let dt = data.data.split('<br />', 1);
+          this.mess = dt;
           dt = JSON.parse(dt);
           if (dt.status == "success") {
             this.toastSuccess();
-              this.router.navigate(['tabs', 'tab3', 'employee']);
+              //this.router.navigate(['tabs', 'tab3', 'employee']);
           } else {
             this.toastFailed();
           }
         })
         .catch((error) => {
           this.toastFailed();
+          this.mess = error;
         });
         /*
         this.http.post(url, {

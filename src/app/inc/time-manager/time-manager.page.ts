@@ -15,6 +15,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class TimeManagerPage implements OnInit {
   id;
   data;
+  mess; 
   off = new Array();
   currentCount = 0;
   day = [
@@ -149,6 +150,8 @@ export class TimeManagerPage implements OnInit {
       }
     }
 
+    //console.log(this.data.detail);
+    
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
@@ -162,17 +165,20 @@ export class TimeManagerPage implements OnInit {
         }, {})
         .then((data) => {
           console.log(data);
+          
           let dt = data.data.split('<br />', 1);
+          this.mess = dt;
           dt = JSON.parse(dt);
           if (dt.status == "success") {
             this.toastSuccess();
-              this.router.navigate(['tabs', 'tab3', 'employee']);
+              //this.router.navigate(['tabs', 'tab3', 'employee']);
           } else {
             this.toastFailed();
           }
         })
         .catch((error) => {
           this.toastFailed();
+          this.mess = error;
         });
         /*
         this.http.post(url, {

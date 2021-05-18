@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from 'src/app/services/auth-guard.service';
 import { ToastController } from '@ionic/angular';
+import { HTTP } from '@ionic-native/http/ngx';
 
 @Component({
   selector: 'app-time-shop',
@@ -14,6 +15,7 @@ export class TimeShopPage implements OnInit {
   data;
   off = new Array();
   currentCount = 0;
+  mess;
   day = [
     
     {
@@ -45,7 +47,6 @@ export class TimeShopPage implements OnInit {
       label: 'Sonntag'
     },
   ]
-  private cors = "https://cors-anywhere.herokuapp.com/";
 
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/shop_times";
   constructor(
@@ -55,6 +56,7 @@ export class TimeShopPage implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     public toastController: ToastController,
+    private http2: HTTP
   ) {
     
   }
@@ -68,9 +70,38 @@ export class TimeShopPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = this.cors + shops[index].domain + this.sub_url;
+        let url = shops[index].domain + this.sub_url;
         let parameter = "?token=" + access_token;;
 
+        this.http2.get(url + parameter, {}, {})
+          .then(data => {
+            let dt = data.data.split('<br />', 1);
+            dt = JSON.parse(dt);
+            if (dt.status == "success") {
+              this.data = dt.data;
+              for (let i = 0; i < 7; i++){
+                for (let j = 0; j < this.data.detail.length; j++){
+                  let e = this.data.detail[j];
+                  if (e.day_of_week == "" + i) {
+                    this.off[i] = e.off_day == "1" ? true:false;
+                    j = this.data.detail.lengt;
+                  } 
+                }
+              }
+            console.log(this.off);
+            } else {
+              this.authService.setAuthenticated(false);
+              this.toastFailed();
+              this.router.navigate(['login']);
+            }
+          })
+          .catch(error => {
+            this.authService.setAuthenticated(false);
+            this.toastFailed();
+            this.router.navigate(['login']);
+            
+          });
+        /*
         this.http.get(url + parameter).subscribe((response) => {
           console.log(response);
           if (response['status'] == "success") {
@@ -89,6 +120,8 @@ export class TimeShopPage implements OnInit {
             this.authService.setAuthenticated(false);
           }
         });
+
+        */
       });
     });
   }
@@ -119,7 +152,29 @@ export class TimeShopPage implements OnInit {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
         let end_url = "/wp-json/bookingtcg/v1/mobile/update/shop_times";
-        let url = this.cors + shops[index].domain + end_url;
+        let url = shops[index].domain + end_url;
+        
+        this.http2.post(url, {
+          access_token: access_token,
+          times: this.data.detail
+        }, {})
+        .then((data) => {
+          console.log(data);
+          
+          let dt = data.data.split('<br />', 1);
+          this.mess = dt;
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+          this.mess = error;
+        });
+        /*
         this.http.post(url, {
           access_token: access_token,
           times: this.data.detail
@@ -137,6 +192,7 @@ export class TimeShopPage implements OnInit {
             this.toastFailed();
           }
         );
+        */
       });
     });
    
