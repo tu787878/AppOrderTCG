@@ -23,13 +23,20 @@ export class AuthGuardService {
   ): Promise<boolean> {
 
     return this.storage.get('shops').then(shops => {
+
+      if (shops == null) {
+        this.storage.set('shops', []);
+        this.router.navigate(['/login']);
+        return false;
+      }
+
       if (shops.length > 0) {
         this.authenticated = true;
         return true;
       }
       this.authenticated = false;
       this.router.navigate(['/login']);
-      return true;
+      return false;
     });
    
   }

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage-angular';
 import { AuthGuardService } from './services/auth-guard.service';
 import { Tab1Page } from './tab1/tab1.page';
-
+import { MenuController } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -21,6 +21,7 @@ export class AppComponent {
     private storage: Storage,
     private auth: AuthGuardService,
     private router: Router,
+    private menu: MenuController
   ) {
     
   }
@@ -29,7 +30,7 @@ export class AppComponent {
     // If using a custom driver:
     // await this.storage.defineDriver(MyCustomDriver)
     await this.storage.create();
-    this.storage.set('shops', []);
+    
     
   }
 
@@ -52,6 +53,7 @@ export class AppComponent {
 
   toAddShop() {
     this.router.navigate(['login']);
+    this.menu.close();
   }
 
   setActiveShop(domain:string){
@@ -87,5 +89,6 @@ export class AppComponent {
       this.logo_active = this.shops[0].logo;
       this.index_active = 0;
     }
+    this.menu.close();
   }
 }
