@@ -5,6 +5,10 @@
     .main{
         width: 40%;
     }
+    .main2{
+        margin-left: 10px;
+        width: 40%;
+    }
     .sub{
         width: 20%;
         ion-icon{
@@ -21,8 +25,10 @@
     margin-left: 15px;
     .new_period{
         margin-left: 15px;
-        color: blue;
+        margin-top: 10px;
+        color: #050505;
         cursor: pointer;
+        font-size: 30px;
     }
     ion-checkbox{
         margin-left: 15px;

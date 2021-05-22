@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
     </ion-buttons>
     <ion-title>Allgemein</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -30,26 +30,33 @@
     <ion-input [(ngModel)]="data.detail.shop_phone"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Benachrichtigung:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_noti"></ion-input>
+    <ion-label>Shop Farbe:</ion-label>
+<input class="choose_color" [cpPresetColorsClass]="'cl'" [(colorPicker)]="data.detail.shop_color" [style.background]="data.detail.shop_color"/>
+  </ion-item>
+<div class="xxx">
+  <ion-item>
+    <h1>Andere</h1>
   </ion-item>
   <ion-item>
-    <ion-label>AGB Links:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_agb"></ion-input>
+    <ion-label position="floating">Benachrichtigung:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_noti"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">AGB Webseite Text:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_agb"></ion-textarea>
   </ion-item>
   
   <ion-item>
-    <ion-label>Betreff Email:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_title_email"></ion-input>
+    <ion-label position="floating">Betreff Email:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_title_email"></ion-textarea>
   </ion-item>
   <ion-item>
-    <ion-label>Zusatzinformation:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_extra_email"></ion-input>
+    <ion-label position="floating">Zusatzinformation:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_extra_email"></ion-textarea>
   </ion-item>
 
-  <ion-item>
-    <ion-label>Shop Farbe:</ion-label>
-    <input class="choose_color" [(colorPicker)]="data.detail.shop_color" [style.background]="data.detail.shop_color"/>
-  </ion-item>
+ 
+</div>
+  
 
 </ion-content>

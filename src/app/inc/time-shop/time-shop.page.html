@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
     </ion-buttons>
     <ion-title>Öffnungszeiten</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveTimes()" style="margin-right: 5px;font-size: 20px;color: blue;">Save</ion-text>
+      <ion-text (click)="saveTimes()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -16,29 +16,30 @@
     <div class="day" *ngFor="let d of day">
       <h2>{{d.label}}</h2>
       <ion-item>
-        <h5>Am Tag nicht arbeiten</h5>
+        <h5>Geschlossen</h5>
         <div>
           <ion-checkbox [(ngModel)]="off[d.index]"  color="primary"></ion-checkbox>
         </div>
        
       </ion-item>
-
+      <div class="row">
+        <ion-label class="main2">Von</ion-label>
+        <ion-label class="main2">Bis</ion-label>
+      </div>
       <div *ngFor="let time of data.detail">
         <div *ngIf="time.day_of_week == d.index" class="row">
           <ion-item class="main">
-            <ion-label>Von</ion-label>
-            <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="time.start_time" placeholder="wählen"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="time.start_time" placeholder="wählen"></ion-datetime>
           </ion-item>
           <ion-item class="main">
-            <ion-label>Bis</ion-label>
-            <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="time.end_time" placeholder="wählen"></ion-datetime>
+            <ion-datetime displayFormat="HH:mm" [(ngModel)]="time.end_time" placeholder="wählen"></ion-datetime>
           </ion-item>
           <ion-item class="sub">
             <ion-icon (click)="deletePeriod(time.id)" name="close-circle-outline"></ion-icon>
           </ion-item>
         </div>
       </div>
-      <p (click)="new_period(d.index)" class="new_period">Neue Zeile hinzufügen</p>
+    <ion-icon (click)="new_period(d.index)" class="new_period"  name="add-circle-outline"></ion-icon>
       
     </div>
     

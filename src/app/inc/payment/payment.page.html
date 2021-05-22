@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
     </ion-buttons>
     <ion-title>Zahlungsmethod</ion-title>
     <ion-buttons slot="end">
@@ -14,7 +14,7 @@
 <ion-content *ngIf="data">
   <p>
     <ion-chip *ngFor="let p of data.detail" outline color="secondary">
-      <ion-icon name="logo-paypal"></ion-icon>
+      <ion-icon name="journal-outline"></ion-icon>
       <ion-label>{{p.name}}</ion-label>
       <ion-icon class="delete" (click)="deletePayment(p.id)" name="close-circle"></ion-icon>
     </ion-chip>

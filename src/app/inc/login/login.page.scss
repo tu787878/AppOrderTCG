@@ -4,7 +4,7 @@ ion-toolbar {
     ion-button {
       text-transform: initial;
       font-size: 17px;
-      --color: #43cebb;
+      --color: #050505;
     }
 
     ion-icon{
@@ -14,7 +14,17 @@ ion-toolbar {
   }
   
   ion-content {
-    --background: #fff url('/assets/login/bg.jpeg') no-repeat center center / cover;
+
+    .help{
+      margin-left: 80%;
+      --background: #050505;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    
+    --background: #fff url('/assets/login/bg3.jpeg') no-repeat center center / cover;
+    //--background: rgb(255, 255, 255) ;
   
     #header {
       display: flex;
@@ -29,8 +39,7 @@ ion-toolbar {
       }
   
       img {
-        width: 100px;
-        height: 100px;
+        margin-top: 50px;
       }
 
       ion-button{
@@ -51,7 +60,8 @@ ion-toolbar {
         border-radius: 50px;
         box-shadow: 1px 8px 8px 0px rgba(0, 0, 0, 0.05);
         --box-shadow: none;
-        --background: #43cebb;
+        --background: #050505;
+        //--background: #43cebb;
       }
     }
   }
@@ -62,7 +72,6 @@ ion-toolbar {
     height: 55px;
     box-shadow: 1px 8px 8px 0px rgba(0, 0, 0, 0.08);
     --highlight-height: 0px;
-    --background: rgb(145, 214, 238);
     ion-input {
       font-size: 18px;
       --padding-top: 20px;
@@ -91,7 +100,7 @@ ion-toolbar {
 
   .back{
     font-size: 14px;
-    color: red;
+    color: rgb(16, 15, 15);
   }
 
 }
