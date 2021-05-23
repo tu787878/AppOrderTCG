@@ -30,8 +30,13 @@
     <ion-input [(ngModel)]="data.detail.shop_phone"></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Shop Farbe:</ion-label>
-<input class="choose_color" [cpPresetColorsClass]="'cl'" [(colorPicker)]="data.detail.shop_color" [style.background]="data.detail.shop_color"/>
+    <p class="for">Shop Farbe:</p>
+    <div class="colors" >
+      <div *ngFor="let color of colors">
+        <div *ngIf="data.detail.shop_color == color" (click)="chooseColor(color)" class="color active" [ngStyle]="{'background-color': color}"></div>
+      <div *ngIf="data.detail.shop_color != color" (click)="chooseColor(color)" class="color" [ngStyle]="{'background-color': color}"></div>
+      </div>
+    </div>
   </ion-item>
 <div class="xxx">
   <ion-item>

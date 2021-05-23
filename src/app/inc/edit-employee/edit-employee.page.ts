@@ -14,7 +14,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class EditEmployeePage implements OnInit {
   id;
   data;
-
+  colors = ['#1e81b0', '#eeeee4', '#e28743', '#eab676', '#76b5c5', '#f5595c', '#2d8c44', '#bd4495']
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/employee";
   constructor(
     private route: ActivatedRoute,
@@ -164,6 +164,14 @@ export class EditEmployeePage implements OnInit {
     };
     console.log(navigationExtras)
     this.router.navigate(['tabs', 'tab3', 'employee', 'edit-employee', 'services-manager'], navigationExtras);
+  }
+
+  chooseColor(code) {
+    this.data.detail.color = code;
+  }
+
+  chooseTextColor(code) {
+    this.data.detail.text_color = code;
   }
 
 

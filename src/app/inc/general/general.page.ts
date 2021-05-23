@@ -15,7 +15,8 @@ export class GeneralPage implements OnInit {
 
   data: any;
   mess;
-
+  colors = ['#1e81b0', '#eeeee4', '#e28743', '#eab676', '#76b5c5', '#f5595c', '#2d8c44', '#bd4495', '#DBFF33',
+  '#33FFBD', '#BC7869', '#69BCA2', '#BC7E69', '#7E69BC', '#8334B9', '#B9343C']
   private sub_url = "/wp-json/bookingtcg/v1/mobile/get/general";
   constructor(
     private http: HttpClient,
@@ -134,5 +135,10 @@ export class GeneralPage implements OnInit {
     });
     toast.present();
   }
+
+  chooseColor(code) {
+    this.data.detail.shop_color = code;
+  }
+
 
 }

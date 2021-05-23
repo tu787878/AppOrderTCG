@@ -28,13 +28,24 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>Farbe:</ion-label>
-      <input [(colorPicker)]="data.detail.color" [style.background]="data.detail.color"/>
+      <p class="for">Farbe:</p>
+      <div class="colors">
+        <div *ngFor="let color of colors">
+          <div *ngIf="data.detail.color == color" (click)="chooseColor(color)" class="color active" [ngStyle]="{'background-color': color}"></div>
+        <div *ngIf="data.detail.color != color" (click)="chooseColor(color)" class="color" [ngStyle]="{'background-color': color}"></div>
+        </div>
+      </div>
     </ion-item>
 
     <ion-item>
-      <ion-label>Text-Farbe:</ion-label>
-      <input [(colorPicker)]="data.detail.text_color" [style.background]="data.detail.text_color"/>
+      <p class="for">Text-Farbe:</p>
+      <div class="colors">
+        <div *ngFor="let color of colors">
+          <div *ngIf="data.detail.text_color == color" (click)="chooseTextColor(color)" class="color active" [ngStyle]="{'background-color': color}"></div>
+          <div *ngIf="data.detail.text_color != color" (click)="chooseTextColor(color)" class="color" [ngStyle]="{'background-color': color}"></div>
+        </div>
+        
+      </div>
     </ion-item>
 
     <ion-list>
