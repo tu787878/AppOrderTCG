@@ -3,28 +3,61 @@
     <ion-buttons slot="start">
       <ion-back-button [text]="'Zurück'"></ion-back-button>
     </ion-buttons>
-    <ion-title>Zahlungsmethod</ion-title>
+    <ion-title>Zahlungsmethode</ion-title>
     <ion-buttons slot="end">
-      <ion-icon *ngIf="!new" (click)="new_payment()" style="font-size: 30px;margin-right: 5px;" name="add-outline"></ion-icon>
-      <ion-icon *ngIf="new" (click)="save_payment()" style="font-size: 30px;margin-right: 5px;" name="save-outline"></ion-icon>
+      <ion-icon (click)="save_payment()" style="font-size: 30px;margin-right: 5px;" name="save-outline"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="data">
-  <p>
-    <ion-chip *ngFor="let p of data.detail" outline color="secondary">
-      <ion-icon name="journal-outline"></ion-icon>
-      <ion-label>{{p.name}}</ion-label>
-      <ion-icon class="delete" (click)="deletePayment(p.id)" name="close-circle"></ion-icon>
-    </ion-chip>
-  </p>
+  <ion-item>
+    <ion-label>Zahlungmethode</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label>Paypal</ion-label>
+    <ion-checkbox [(ngModel)]="paypal" color="primary" slot="start"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Klarna</ion-label>
+    <ion-checkbox [(ngModel)]="klarna" color="primary" slot="start"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Barzahlung Text:</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_barzahlung"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Benutzerdefiniertes Zahlungsmethode</ion-label>
+  </ion-item>
+  <ion-item class="custom_method" *ngFor="let item of methodes">
+    <ion-input [(ngModel)]="item.value"></ion-input>
+    <ion-icon (click)="deleteMethod(item)" color="danger" name="close-circle-outline"></ion-icon>
+  </ion-item>
+  
+  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="new_method()" class="new_period"  name="add-circle-outline"></ion-icon>
+  <ion-item>
+    <ion-label>Paypal Einstellung</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Paypal Email-Adresse:</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_paypal_email_address"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Sandbox (Paypal Testen)</ion-label>
+    <ion-checkbox [(ngModel)]="sandbox" color="primary" slot="start"></ion-checkbox>
+  </ion-item>
+  <ion-item>
+    <ion-label>Klarna Einstellung</ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Klarna Benutzername:</ion-label>
+    <ion-input [(ngModel)]="data.detail.klarna_username"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Klarna Passwort:</ion-label>
+    <ion-input [(ngModel)]="data.detail.klarna_password"></ion-input>
+  </ion-item>
 
-  <div *ngIf="new">
-    <ion-item>
-      <ion-label>Name:</ion-label>
-      <ion-input [(ngModel)]="name"></ion-input>
-    </ion-item>
-  </div>
+  <p>{{mess}}</p>
 
 </ion-content>

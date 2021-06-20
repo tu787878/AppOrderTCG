@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Allgemein</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  
+  <ion-item>
+    <ion-label position="floating">Zusatzstoffe:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_taxonomy_text"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Text für Erfolgreicher Bestellungsseite:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_thankyou_text"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">AGB Pfad Einstellung:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_term_text"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Warenkorb Information Text:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_cart_text"></ion-textarea>
+  </ion-item>
+
+  <ion-button
+            ionicColorPicker
+            (colorPickerOpen)="eventOccur($event)"
+            (colorPickerClose)="eventOccur($event)"
+            (colorChange)="eventOccur($event)">
+            Schrift Farbe
+    </ion-button>
+    <ion-button
+        ionicColorPicker
+        (colorPickerOpen)="eventOccur($event)"
+        (colorPickerClose)="eventOccur($event)"
+        (colorChange)="eventOccur($event)">
+        Hintergrund Farbe
+  </ion-button>
+  
+  <ion-item>
+    <ion-label>im Laden abholen</ion-label>
+    <ion-checkbox [(ngModel)]="show_notify" color="primary" slot="start"></ion-checkbox>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Banner text</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.notify_text"></ion-textarea>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Close shop text:</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.close_shop_text"></ion-textarea>
+  </ion-item>
+  
+</ion-content>

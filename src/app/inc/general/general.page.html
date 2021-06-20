@@ -13,55 +13,70 @@
 <ion-content *ngIf="data">
   
   <ion-item>
-    <ion-label>Shop Name:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_name"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Adress:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_address"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label>Email:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_email"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Telefon:</ion-label>
-    <ion-input [(ngModel)]="data.detail.shop_phone"></ion-input>
-  </ion-item>
-  <ion-item>
-    <p class="for">Shop Farbe:</p>
-    <div class="colors" >
-      <div *ngFor="let color of colors">
-        <div *ngIf="data.detail.shop_color == color" (click)="chooseColor(color)" class="color active" [ngStyle]="{'background-color': color}"></div>
-      <div *ngIf="data.detail.shop_color != color" (click)="chooseColor(color)" class="color" [ngStyle]="{'background-color': color}"></div>
+    <ion-label >Währung</ion-label>
+    <ion-select [(ngModel)]="data.detail.currency" placeholder="wählen">
+      <div *ngFor="let currency of currencies">
+        <ion-select-option [value]="currency.value">{{currency.text}}</ion-select-option>
       </div>
-    </div>
-  </ion-item>
-<div class="xxx">
-  <ion-item>
-    <h1>Information</h1>
+    </ion-select>
   </ion-item>
   <ion-item>
-    <ion-label position="floating">Benachrichtigung:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_noti"></ion-textarea>
+    <ion-label position="stacked">Währung von $ zu €:</ion-label>
+    <ion-input [(ngModel)]="data.detail.currency_rate"></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-label position="floating">AGB Webseite Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_agb"></ion-textarea>
-  </ion-item>
-  
-  <ion-item>
-    <ion-label position="floating">Betreff Email:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_title_email"></ion-textarea>
-  </ion-item>
-  <ion-item>
-    <ion-label position="floating">Zusatzinformation:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_extra_email"></ion-textarea>
-  </ion-item>
-
  
-</div>
-  
+  <ion-radio-group [(ngModel)]="data.detail.show_second_number" allow-empty-selection="false" name="radio-group">
+    <ion-list-header>
+      <ion-label position="stacked">Zweite Bestellungsnummer</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label >Aus</ion-label>
+      <ion-radio slot="start" name="style" value="0"></ion-radio>
+    </ion-item>
+    <ion-item>
+      <ion-label>An</ion-label>
+      <ion-radio slot="start" name="style" value="1"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+ 
+  <ion-item>
+    <ion-label position="stacked">Google map API-Key:</ion-label>
+    <ion-input [(ngModel)]="data.detail.google_key"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Entfernung vom Shop zum Kunden Anzeigen?</ion-label>
+    <ion-checkbox [(ngModel)]="get_distance" color="primary" slot="start"></ion-checkbox>
+  </ion-item>
 
+  <ion-item>
+    <ion-label>Sortierung</ion-label>
+    <ion-select [(ngModel)]="data.detail.orderby" placeholder="wählen">
+      <div *ngFor="let order of orderby">
+        <ion-select-option [value]="order">{{order}}</ion-select-option>
+      </div>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Sortierart</ion-label>
+    <ion-select [(ngModel)]="data.detail.order" placeholder="wählen">
+      <div *ngFor="let sort of sortart">
+        <ion-select-option [value]="sort.value">{{sort.text}}</ion-select-option>
+      </div>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Einstellung für Alert in "milisekunden":</ion-label>
+    <ion-input [(ngModel)]="data.detail.time_to_show_alert"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Weiter Einkaufen button link:</ion-label>
+    <ion-input [(ngModel)]="data.detail.back_link_in_cart"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">Shop redirect link:</ion-label>
+    <ion-input [(ngModel)]="data.detail.redirect_link_shop"></ion-input>
+  </ion-item>
+  
 </ion-content>

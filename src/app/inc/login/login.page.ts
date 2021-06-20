@@ -13,8 +13,8 @@ import { HTTP } from '@ionic-native/http/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private sub_url = "/wp-json/bookingtcg/v1/mobile/auth";
-  input = { domain: "https://www.newyorknails.eu/", code: "TCG-kor0o4sb" };
+  private sub_url = "/wp-json/ordertcg/v1/mobile/auth";
+  input = { domain: "http://ordertcg.local/", code: "TCG-kpjnswy4" };
   private loading;
   message;
   message2;

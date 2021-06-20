@@ -125,6 +125,10 @@ const routes: Routes = [
         path: 'tab4',
         children: [
           {
+            path: 'shop-style',
+            loadChildren: () => import('../inc/shop-style/shop-style.module').then( m => m.ShopStylePageModule)
+          },
+          {
             path: '',
             loadChildren: () => import('../tab4/tab4.module').then(m => m.Tab4PageModule)
           },
@@ -143,6 +147,22 @@ const routes: Routes = [
           {
             path: 'email-setting',
             loadChildren: () => import('../inc/email-setting/email-setting.module').then( m => m.EmailSettingPageModule)
+          },
+          {
+            path: 'delivery',
+            loadChildren: () => import('../inc/delivery/delivery.module').then( m => m.DeliveryPageModule)
+          },
+          {
+            path: 'info',
+            loadChildren: () => import('../inc/info/info.module').then( m => m.InfoPageModule)
+          },
+          {
+            path: 'zipcode',
+            loadChildren: () => import('../inc/zipcode/zipcode.module').then( m => m.ZipcodePageModule)
+          },
+          {
+            path: 'shop-address',
+            loadChildren: () => import('../inc/shop-address/shop-address.module').then( m => m.ShopAddressPageModule)
           },
         ]
       },

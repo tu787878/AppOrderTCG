@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Shop Stil</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveStyle()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  *ngIf="data">
+  <ion-list>
+    <ion-radio-group [(ngModel)]="data.detail.theme" allow-empty-selection="false" name="radio-group">
+      <ion-list-header>
+        <ion-label>Theme Stil</ion-label>
+      </ion-list-header>
+      <ion-item>
+        <ion-label>Dunkel (schwarz)</ion-label>
+        <ion-radio slot="start" name="style" value="dark"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Hell (Weiss)</ion-label>
+        <ion-radio slot="start" name="style" value="light"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+
+  <ion-list>
+    <ion-radio-group value="biff">
+
+      <ion-list-header>
+        <ion-label>Vorschaubild</ion-label>
+      </ion-list-header>
+  
+      <ion-item>
+        <ion-label>Vorschaubild Unsichtbar?</ion-label>
+        <ion-checkbox [(ngModel)]="thumbnail" color="primary" slot="start"></ion-checkbox>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label>Warenkorb Float?</ion-label>
+        <ion-checkbox [(ngModel)]="float" color="primary" slot="start"></ion-checkbox>
+      </ion-item>
+  
+    </ion-radio-group>
+  </ion-list>
+</ion-content>

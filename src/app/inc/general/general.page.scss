@@ -1,32 +1,8 @@
-.choose_color{
-    width: 70px;
-    border-radius: 1rem;
-
+ion-label{
+    font-weight: bold;
+    size: 44px;
 }
 
-.xxx{
-    z-index: auto;
-}
-
-.cl{
-    z-index: 99999;
-}
-
-.colors{
-    display: flex !important;
-    flex-wrap: wrap !important;
-    .color{
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        margin-top: 10px;
-    }
-
-    .active{
-        border: solid 2px #050505;
-    }
-}
-
-.for{
-    margin-right: 10px;
+ion-input{
+    --color: rgb(145, 145, 145);
 }

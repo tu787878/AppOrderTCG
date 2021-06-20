@@ -15,9 +15,42 @@ export class GeneralPage implements OnInit {
 
   data: any;
   mess;
+  get_distance: boolean;
+  currencies = [
+    {
+      value: "1",
+      text: '$'
+    },
+    {
+      value: "2",
+      text: '€'
+    },
+    {
+      value: "3",
+      text: 'CHF'
+    }
+  ];
+  orderby = [
+    "date",
+    "name",
+    "id",
+    "slug",
+    "title_number"
+  ];
+  sortart = [
+    {
+      value: "desc",
+      text: "DESC"
+    },
+    {
+      value: "asc",
+      text: "ASC"
+    },
+  ]
+
   colors = ['#1e81b0', '#eeeee4', '#e28743', '#eab676', '#76b5c5', '#f5595c', '#2d8c44', '#bd4495', '#DBFF33',
   '#33FFBD', '#BC7869', '#69BCA2', '#BC7E69', '#7E69BC', '#8334B9', '#B9343C']
-  private sub_url = "/wp-json/bookingtcg/v1/mobile/get/general";
+  private sub_url = "/wp-json/ordertcg/v1/mobile/get/general";
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -50,16 +83,17 @@ export class GeneralPage implements OnInit {
             dt = JSON.parse(dt);
             if (dt.status == "success") {
               this.data = dt.data;
+              this.get_distance = this.data.detail.get_distance == "on" ? true : false;
             } else {
               this.authService.setAuthenticated(false);
-              this.toastFailed();
-              this.router.navigate(['login']);
+              this.toastFailed(data.data);
+              //this.router.navigate(['login']);
             }
           })
           .catch(error => {
             this.authService.setAuthenticated(false);
-            this.toastFailed();
-            this.router.navigate(['login']);
+            this.toastFailed(error);
+            //this.router.navigate(['login']);
             
           });
       });
@@ -67,12 +101,12 @@ export class GeneralPage implements OnInit {
   }
 
   saveGeneral() {
+    this.data.detail.get_distance = this.get_distance ? "on" : "off";
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
-        let end_url = "/wp-json/bookingtcg/v1/mobile/update/general";
+        let end_url = "/wp-json/ordertcg/v1/mobile/update/general";
         let url =  shops[index].domain + end_url;
-
         
         this.http2.post(url, {
           access_token: access_token,
@@ -87,11 +121,11 @@ export class GeneralPage implements OnInit {
             this.toastSuccess();
             this.getData();
           } else {
-            this.toastFailed();
+            this.toastFailed(data.status);
           }
         })
         .catch((error) => {
-          this.toastFailed();
+          this.toastFailed(error);
           this.mess = error;
         });
         /*
@@ -127,9 +161,9 @@ export class GeneralPage implements OnInit {
     toast.present();
   }
 
-  async toastFailed() {
+  async toastFailed(err) {
     const toast = await this.toastController.create({
-      message: 'Fehler! Bitte versuchen Sie noch mal',
+      message: `Fehler! Bitte versuchen Sie noch mal: ${err}`,
       duration: 2000,
       color: 'danger'
     });
