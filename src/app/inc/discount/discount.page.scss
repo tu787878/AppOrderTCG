@@ -1,0 +1,17 @@
+h1, h2{
+    margin-left: 10px;
+}
+
+.flex{
+    display: flex;
+    ion-input{
+        width: 45%;
+    }
+    ion-label{
+        width: 45%;
+    }
+}
+
+.label{
+    margin-left: 10px;
+}

@@ -13,19 +13,19 @@
   <div *ngIf="data">
     <div class="filter">
       <ion-item>
-        <ion-label>MM DD YY</ion-label>
-        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "von" displayFormat="MM DD YY" placeholder="Von"></ion-datetime>
+        <ion-label>DD MM YYYY</ion-label>
+        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "von" displayFormat="MM DD YYYY" placeholder="Von"></ion-datetime>
       </ion-item>
       <ion-item>
-        <ion-label>MM DD YY</ion-label>
-        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "bis" displayFormat="MM DD YY" placeholder="Bis"></ion-datetime>
+        <ion-label>DD MM YYYY</ion-label>
+        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "bis" displayFormat="MM DD YYYY" placeholder="Bis"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Status</ion-label>
         <ion-select (ionChange)="changeFilter()" [(ngModel)] = "status" placeholder="Alle">
-          <ion-select-option value="all">Alle</ion-select-option>
-          <ion-select-option value="erledigt">Erledig</ion-select-option>
-          <ion-select-option value="warten">Warten</ion-select-option>
+          <ion-select-option value="">Alle</ion-select-option>
+          <ion-select-option value="processing">Warten</ion-select-option>
+          <ion-select-option value="completed">Fertig</ion-select-option>
         </ion-select>
       </ion-item>
     </div>
@@ -37,7 +37,7 @@
             Verdienen
           </div>
           <div class="data">
-            € {{data.summer}}
+            € {{data.detail.total_all}}
           </div>
         </div>
         <div class="right">
@@ -56,7 +56,7 @@
             Bestellung
           </div>
           <div class="data">
-            {{data.count}}
+            {{data.detail.post_count}}
           </div>
         </div>
         <div class="right">
@@ -67,66 +67,7 @@
   
       </ion-card-content>
     </ion-card>
-    <ion-card>
-      <ion-card-content>
-        <div class="left">
-          <div class="name">
-            Erwarten
-          </div>
-          <div class="data">
-            {{data.wait}}
-          </div>
-        </div>
-        <div class="right">
-          <div class="logo">
-            <ion-icon size="large" name="bookmarks-outline"></ion-icon>
-          </div>
-        </div>
-  
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-content>
-        <div class="left">
-          <div class="name">
-            Fertig
-          </div>
-          <div class="data">
-            {{data.done}}
-          </div>
-        </div>
-        <div class="right">
-          <div class="logo">
-            <ion-icon size="large" name="bag-check-outline"></ion-icon>
-          </div>
-        </div>
-  
-      </ion-card-content>
-    </ion-card>
-    <ion-card>
-      <ion-card-content>
-        <div class="all">
-          <div class="name">
-            Spitzenverdienst
-          </div>
-          <div class="data">
-           <ion-list>
-            <ion-item-group>
-              <ion-item *ngFor="let e of data.employee">
-                <div class="employee_name">
-                  {{e.name}}
-                </div>
-                <div class="money">
-                  {{e.price}}€
-                </div>
-              </ion-item>
-            </ion-item-group>
-           </ion-list>
-          </div>
-        </div>
-  
-      </ion-card-content>
-    </ion-card>
+    
   </div>
 
 

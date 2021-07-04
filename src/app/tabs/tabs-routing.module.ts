@@ -164,6 +164,10 @@ const routes: Routes = [
             path: 'shop-address',
             loadChildren: () => import('../inc/shop-address/shop-address.module').then( m => m.ShopAddressPageModule)
           },
+          {
+            path: 'discount',
+            loadChildren: () => import('../inc/discount/discount.module').then( m => m.DiscountPageModule)
+          },
         ]
       },
       {

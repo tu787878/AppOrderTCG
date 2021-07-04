@@ -45,7 +45,6 @@ export class ZipcodePage implements OnInit {
             dt = JSON.parse(dt);
             if (dt.status == "success") {
               this.data = dt.data;
-              this.mess = this.data.detail.zipcode_data.length;
             } else {
               this.authService.setAuthenticated(false);
               this.toastFailed(data.data);
@@ -64,6 +63,7 @@ export class ZipcodePage implements OnInit {
 
   saveGeneral() {
     //this.mess = this.data.detail.zipcode_data.length;
+    
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
@@ -89,26 +89,6 @@ export class ZipcodePage implements OnInit {
         .catch((error) => {
           this.toastFailed(error);
         });
-        /*
-        this.http.post(url, {
-          access_token: access_token,
-          detail: this.data.detail
-          
-        }).subscribe((response) => {
-            console.log(response);
-            if(response['status'] == "success"){
-              this.toastSuccess();
-              this.getData();
-            } else {
-              this.toastFailed();
-            }
-        },
-          (err) => {
-            this.toastFailed();
-          }
-        );
-
-        */
       });
     });
   }
@@ -139,8 +119,8 @@ export class ZipcodePage implements OnInit {
     })
   }
 
-  deleteRow(item) {
-    this.data.detail.zipcode_data = this.data.detail.zipcode_data.filter(i => i.zipcode != item.zipcode);
+  deleteRow(data, index) {
+    data.splice(index, 1);
   }
 
 }

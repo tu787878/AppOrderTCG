@@ -4,6 +4,38 @@
     .time{
         width: 45%;
     }
+
+}
+
+.close_2{
+    width: 100% !important;
+}
+.new{
+    display: flex;
+    margin-left: 5px;
+    width: 100% !important;
+
+    ion-item{
+        width: 100% !important;
+    }
+
+    ion-datetime{
+        width: 30% !important;
+    }
+}
+
+.n2{
+    display: flex;
+    margin-left: 5px;
+    width: 100% !important;
+
+    ion-item{
+        width: 100% !important;
+    }
+
+    ion-datetime{
+        width: 45% !important;
+    }
 }
 
 h3{

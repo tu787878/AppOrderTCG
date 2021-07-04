@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { HTTP } from '@ionic-native/http/ngx';
-import { ToastController } from '@ionic/angular';
+import { IonInfiniteScroll, ToastController } from '@ionic/angular';
 import { Storage } from '@ionic/storage';
-import { CalendarComponentOptions } from 'ion2-calendar'
 import * as moment from 'moment';
 import { AuthGuardService } from '../services/auth-guard.service';
 
@@ -14,58 +13,70 @@ import { AuthGuardService } from '../services/auth-guard.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
-
-  private sub_url = "/wp-json/bookingtcg/v1/mobile/get/events";
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+  private sub_url = "/wp-json/ordertcg/v1/mobile/get/orders";
   date: string;
   data;
   d;
   mess;
+  max_page;
+  page = 0;
   type: 'moment'; // 'string' | 'js-date' | 'moment' | 'time' | 'object'
-  options: CalendarComponentOptions = {
-    color: 'primary',
-    showMonthPicker: false,
-    from: new Date('1995-12-17T03:24:00')
-  };
+  
+  von = '';
+  von1 = '';
+  bis = '';
+  bis1 = '';
+  status = '';
 
   constructor(
-    private http: HttpClient,
     private storage: Storage,
     private authService: AuthGuardService,
     private router: Router,
     public toastController: ToastController,
     private http2: HTTP,
   ) { }
+
+  ionViewWillEnter() {
+    this.getData();
+  }
   
-  changeDate($event) {
-    this.d = moment(this.date).format('YYYY-MM-DD');
-    this.getData(this.d);
+  changeFilter($event) {
+    this.getData();
   }
 
-  getData(d:string) {
+  getData() {
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;
 
-        let url = shops[index].domain + this.sub_url;
-        let parameter = "?token=" + access_token + "&date=" + d;
+        if (this.von != '') {
+          this.von1 = moment(this.von).format('DD-MM-YYYY');
+        }
+        if (this.bis != '') {
+          this.bis1 = moment(this.bis).format('DD-MM-YYYY');
+        }
 
+       
+        let url = shops[index].domain + this.sub_url;
+        let parameter = "?token=" + access_token + "&date_from=" + this.von1 + "&date_to=" + this.bis1 + "&status=" + this.status;
+        this.mess = parameter;
         this.http2.get(url + parameter, {}, {})
           .then(data => {
             let dt = data.data.split('<br />', 1);
-            
+            //this.mess = dt;
             dt = JSON.parse(dt);
+            
             if (dt.status == "success") {
               this.data = dt.data;
+              this.max_page = this.data.pages;
+              //this.mess = this.data.detail.length;
             } else {
               this.authService.setAuthenticated(false);
-              this.router.navigate(['login']);
             }
           })
           .catch(error => {
-
             this.authService.setAuthenticated(false);
-            this.router.navigate(['login']);
-
           });
       });
     });
@@ -79,66 +90,6 @@ export class Tab2Page {
     };
     console.log(navigationExtras)
     this.router.navigate(['tabs', 'tab2', 'detail-event'], navigationExtras);
-  }
-
-  changeToggle(e:any) {
-    
-    this.storage.get('shops').then((shops) => {
-      this.storage.get('active_shop').then((index) => {
-        if (shops.length == 0 || shops[index] == undefined) {
-          this.authService.setAuthenticated(false);
-          this.router.navigate(['login']);
-          return;
-        }
-        let access_token = shops[index].access_token;
-        let end_url = "/wp-json/bookingtcg/v1/mobile/update/event";
-        let url = shops[index].domain + end_url;
-        let action = (e.status === "wait") ? "erledigt" : "wait";
-        
-        this.http2.post(url, {
-          access_token: access_token,
-          event_id: e.id,
-          action: action
-        }, {})
-        .then((data) => {
-          console.log(data);
-          let dt = data.data.split('<br />', 1);
-          this.mess = dt;
-          dt = JSON.parse(dt);
-          if (dt.status == "success") {
-            this.getData(this.d);
-            this.toastSuccess();
-          } else {
-            this.toastFailed();
-          }
-        })
-        .catch((error) => {
-          this.toastFailed();
-          this.mess = error;
-          
-        });
-       /* 
-        this.http.post(url, {
-          access_token: access_token,
-          event_id: e.id,
-          action: action
-        }).subscribe((response) => {
-            console.log(response);
-          if (response['status'] == "success") {
-            this.getData(this.d);
-              this.toastSuccess();
-            } else {
-              this.toastFailed();
-            }
-        },
-          (err) => {
-            this.toastFailed();
-          }
-        );
-
-        */
-      });
-    });
   }
 
   async toastSuccess() {
@@ -157,5 +108,15 @@ export class Tab2Page {
       color: 'danger'
     });
     toast.present();
+  }
+
+  loadData(event) {
+      setTimeout(() => {
+        event.target.complete();
+        this.page++;
+        if (this.page > this.max_page) {
+          event.target.disabled = true;
+        }
+      }, 500);
   }
 }

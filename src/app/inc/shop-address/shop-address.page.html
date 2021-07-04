@@ -1,9 +1,32 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>shop_address</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Shop Standort</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="saveStyle()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content  *ngIf="data">
+  <ion-item>
+    <ion-label>Shop Name</ion-label>
+    <ion-input [(ngModel)]="data.detail.shop_name"></ion-input>
+  </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">Shop Addresse</ion-label>
+    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.shop_address"></ion-textarea>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>Email-Address</ion-label>
+    <ion-input [(ngModel)]="data.detail.email"></ion-input>
+  </ion-item>
+
+
+  <h1>{{mess}}</h1>
 </ion-content>

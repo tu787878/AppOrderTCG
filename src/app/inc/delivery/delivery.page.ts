@@ -19,6 +19,7 @@ export class DeliveryPage implements OnInit {
 
   open_1 = [];
   open_2 = [];
+  shipping = [];
 
   day_of_week = [
     {
@@ -87,6 +88,18 @@ export class DeliveryPage implements OnInit {
               this.dsmart_method_direct = this.data.detail.dsmart_method_direct == "on" ? true : false;
               this.close_shop = this.data.detail.close_shop == "on" ? true : false;
             
+
+              this.shipping = [];
+              for (let i = 0; i < this.data.detail.dsmart_shipping_to.length; i++){
+                let a = {
+                  from: this.data.detail.dsmart_shipping_to[i],
+                  to: this.data.detail.dsmart_shipping_from[i],
+                  fee : this.data.detail.dsmart_shipping_cs_fee[i],
+                }
+                this.shipping.push(a);
+              }
+              
+
               this.open_1 = [
                 {
                   text: "Montag",
@@ -205,6 +218,120 @@ export class DeliveryPage implements OnInit {
       from: "",
       to: ""
     })
+  }
+
+  newRow2(object) {
+    object.push({
+      date: "",
+      open: "",
+      close: ""
+    })
+  }
+
+  newRow3(object) {
+    object.push({
+      from: "",
+      to: "",
+      fee: ""
+    })
+  }
+
+
+  save() {
+
+    this.data.detail.time_open_shop_mo = this.open_1[0].open;
+    this.data.detail.time_close_shop_mo = this.open_1[0].close;
+
+    this.data.detail.time_open_shop_tu = this.open_1[1].open;
+    this.data.detail.time_close_shop_tu = this.open_1[1].close;
+
+    this.data.detail.time_open_shop_we = this.open_1[2].open;
+    this.data.detail.time_close_shop_we = this.open_1[2].close;
+
+    this.data.detail.time_open_shop_th = this.open_1[3].open;
+    this.data.detail.time_close_shop_th = this.open_1[3].close;
+
+    this.data.detail.time_open_shop_fr = this.open_1[4].open;
+    this.data.detail.time_close_shop_fr = this.open_1[4].close;
+
+    this.data.detail.time_open_shop_sa = this.open_1[5].open;
+    this.data.detail.time_close_shop_sa = this.open_1[5].close;
+
+    this.data.detail.time_open_shop_su = this.open_1[6].open;
+    this.data.detail.time_close_shop_su = this.open_1[6].close;
+
+    //******************************************** */
+
+    this.data.detail.time_open_shop_2_mo = this.open_2[0].open;
+    this.data.detail.time_close_shop_2_mo = this.open_2[0].close;
+
+    this.data.detail.time_open_shop_2_tu = this.open_2[1].open;
+    this.data.detail.time_close_shop_2_tu = this.open_2[1].close;
+
+    this.data.detail.time_open_shop_2_we = this.open_2[2].open;
+    this.data.detail.time_close_shop_2_we = this.open_2[2].close;
+
+    this.data.detail.time_open_shop_2_th = this.open_2[3].open;
+    this.data.detail.time_close_shop_2_th = this.open_2[3].close;
+
+    this.data.detail.time_open_shop_2_fr = this.open_2[4].open;
+    this.data.detail.time_close_shop_2_fr = this.open_2[4].close;
+
+    this.data.detail.time_open_shop_2_sa = this.open_2[5].open;
+    this.data.detail.time_close_shop_2_sa = this.open_2[5].close;
+
+    this.data.detail.time_open_shop_2_su = this.open_2[6].open;
+    this.data.detail.time_close_shop_2_su = this.open_2[6].close;
+
+    /***************************************************** */
+
+    this.data.detail.dsmart_method_ship = this.dsmart_method_ship ? "on" : "off";
+    this.data.detail.dsmart_method_direct = this.dsmart_method_direct ? "on" : "off";
+    this.data.detail.close_shop = this.close_shop ? "on" : "off";
+
+    /******************************************************** */
+
+    this.data.detail.dsmart_shipping_to = [];
+    this.data.detail.dsmart_shipping_from = [];
+    this.data.detail.dsmart_shipping_cs_fee = [];
+    for (let i = 0; i < this.shipping.length; i++){
+      this.data.detail.dsmart_shipping_to[i] = this.shipping[i].to;
+      this.data.detail.dsmart_shipping_from[i] = this.shipping[i].from;
+      this.data.detail.dsmart_shipping_cs_fee[i] = this.shipping[i].fee;
+    }
+  
+    
+    this.storage.get('shops').then((shops) => {
+      this.storage.get('active_shop').then((index) => {
+        let access_token = shops[index].access_token;
+        let end_url = "/wp-json/ordertcg/v1/mobile/update/delivery";
+        let url = shops[index].domain + end_url;
+
+        this.http2.post(url, {
+          access_token: access_token,
+          detail: this.data.detail,
+        }, {})
+        .then((data) => {
+          console.log(data);
+          let dt = data.data.split('<br />', 1);
+          dt = JSON.parse(dt);
+          if (dt.status == "success") {
+            this.toastSuccess();
+            this.getData();
+          } else {
+            this.toastFailed();
+          }
+        })
+        .catch((error) => {
+          this.toastFailed();
+        });
+
+      });
+    });
+  }
+
+  deleteRow(data,index) {
+    data.splice(index, 1);
   }
 
 }

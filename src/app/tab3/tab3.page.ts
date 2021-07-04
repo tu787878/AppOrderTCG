@@ -52,13 +52,11 @@ export class Tab3Page {
               this.data = dt.data;
             } else {
               this.authService.setAuthenticated(false);
-              this.router.navigate(['login']);
             }
           })
           .catch(error => {
 
             this.authService.setAuthenticated(false);
-            this.router.navigate(['login']);
 
           });
       });

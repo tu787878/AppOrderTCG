@@ -32,23 +32,9 @@
     <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_cart_text"></ion-textarea>
   </ion-item>
 
-  <ion-button
-            ionicColorPicker
-            (colorPickerOpen)="eventOccur($event)"
-            (colorPickerClose)="eventOccur($event)"
-            (colorChange)="eventOccur($event)">
-            Schrift Farbe
-    </ion-button>
-    <ion-button
-        ionicColorPicker
-        (colorPickerOpen)="eventOccur($event)"
-        (colorPickerClose)="eventOccur($event)"
-        (colorChange)="eventOccur($event)">
-        Hintergrund Farbe
-  </ion-button>
-  
+  <h2>Shop Info-Banner</h2>
   <ion-item>
-    <ion-label>im Laden abholen</ion-label>
+    <ion-label> Info-Banner Anzeigen?</ion-label>
     <ion-checkbox [(ngModel)]="show_notify" color="primary" slot="start"></ion-checkbox>
   </ion-item>
 

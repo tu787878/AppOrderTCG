@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Lieferung & Abholung</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+      <ion-text (click)="save()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -28,10 +28,9 @@
   </ion-item>
   <p style="margin: 10px;">"Online Shop wird sofort geschlossen, so dass keine Bestellung mehr möglich ist.
     Vergiss nicht den Online Shop wieder einzuschalten "Haken rausnehmen"!!!"</p>
-  
+
   <ion-item>
-    <ion-label position="stacked">Bearbeitungszeit für Lieferung
-      :</ion-label>
+    <ion-label position="stacked">Bearbeitungszeit für Lieferung:</ion-label>
     <ion-input [(ngModel)]="data.detail.delay_time"></ion-input>
   </ion-item>
   <ion-item>
@@ -39,8 +38,9 @@
       :</ion-label>
     <ion-input [(ngModel)]="data.detail.delay_delivery"></ion-input>
   </ion-item>
-  
+
   <h1>Öffnungszeiten Lieferung</h1>
+  {{mess}}
   <div *ngFor="let day of open_1" class="open_1">
     <h3 class="day_text">{{day.text}}</h3>
     <div class="day">
@@ -65,9 +65,9 @@
       </ion-item>
     </div>
   </div>
-  
+
   <h1>Schliesszeit Abholung</h1>
-  <div class="close_1" *ngFor="let item of data.detail.closed_time">
+  <div class="close_1" *ngFor="let item of data.detail.closed_time; let i = index">
     <ion-item>
       <ion-select [(ngModel)]="item.date" placeholder="wählen">
         <div *ngFor="let day of day_of_week">
@@ -75,20 +75,19 @@
         </div>
       </ion-select>
     </ion-item>
-    <div class="day">
-      <ion-item class="time">
+    <div class="n2">
+      <ion-item>
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.from" placeholder="wählen"></ion-datetime>
-      </ion-item>
-      <ion-item class="time">
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.to" placeholder="wählen"></ion-datetime>
+        <ion-icon (click)="deleteRow(data.detail.closed_time,i)" color="danger" name="close-circle-outline"></ion-icon>
       </ion-item>
-      <ion-icon (click)="deleteRow(item)" color="danger" name="close-circle-outline"></ion-icon>
     </div>
   </div>
-  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow(data.detail.closed_time)" class="new_period"  name="add-circle-outline"></ion-icon>
+  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow(data.detail.closed_time)"
+    class="new_period" name="add-circle-outline"></ion-icon>
 
   <h1>Schliesszeit Lieferung</h1>
-  <div class="close_1" *ngFor="let item of data.detail.closed_time_2">
+  <div class="close_1" *ngFor="let item of data.detail.closed_time_2; let i = index">
     <ion-item>
       <ion-select [(ngModel)]="item.date" placeholder="wählen">
         <div *ngFor="let day of day_of_week">
@@ -96,35 +95,70 @@
         </div>
       </ion-select>
     </ion-item>
-    <div class="day">
-      <ion-item class="time">
+    <div class="n2">
+      <ion-item>
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.from" placeholder="wählen"></ion-datetime>
-      </ion-item>
-      <ion-item class="time">
+
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.to" placeholder="wählen"></ion-datetime>
+
+        <ion-icon (click)="deleteRow(data.detail.closed_time_2, i)" color="danger" name="close-circle-outline">
+        </ion-icon>
       </ion-item>
-      <ion-icon (click)="deleteMethod(item)" color="danger" name="close-circle-outline"></ion-icon>
     </div>
   </div>
-  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow(data.detail.closed_time_2)" class="new_period"  name="add-circle-outline"></ion-icon>
+  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow(data.detail.closed_time_2)"
+    class="new_period" name="add-circle-outline"></ion-icon>
   <h1>Benutzerdefinierte Öffnungszeit</h1>
-  <div class="close_2" *ngFor="let item of data.detail.dsmart_custom_date">
-    <div class="day">
-      <ion-item class="time">
+  <div class="close_2" *ngFor="let item of data.detail.dsmart_custom_date; let i = index">
+    <div class="new">
+      <ion-item>
         <ion-datetime displayFormat="DD-MM-YYYY" [(ngModel)]="item.date" placeholder="wählen"></ion-datetime>
-      </ion-item>
-      <ion-item class="time">
+
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.open" placeholder="wählen"></ion-datetime>
-      </ion-item>
-      <ion-item class="time">
         <ion-datetime displayFormat="HH:mm" [(ngModel)]="item.close" placeholder="wählen"></ion-datetime>
+
+        <ion-icon (click)="deleteRow(data.detail.dsmart_custom_date, i)" color="danger" name="close-circle-outline">
+        </ion-icon>
       </ion-item>
-      <ion-icon (click)="deleteMethod(item)" color="danger" name="close-circle-outline"></ion-icon>
     </div>
   </div>
-  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow2(data.detail.dsmart_custom_date)" class="new_period"  name="add-circle-outline"></ion-icon>
-  
-  
-  <h1>{{mess}}</h1>
+  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow2(data.detail.dsmart_custom_date)"
+    class="new_period" name="add-circle-outline"></ion-icon>
+  <h1>Lieferung Einstellung</h1>
+  <ion-item>
+    <ion-label position="stacked">Maximum Auto-Route in KM:</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_distance"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Minimum Bestellung für Lieferung:</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_min_order"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Minimum Bestellung für Kostenlos Lieferung:</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_min_order_free"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="stacked">Standardwert für Lieferkosten($):</ion-label>
+    <ion-input [(ngModel)]="data.detail.dsmart_shipping_fee"></ion-input>
+  </ion-item>
+  <h1>Benutzerdefinierte Lieferkosten($)</h1>
+  <div class="shipping" *ngFor="let item of shipping; let i = index">
+    <div class="day">
+      <ion-item>
+        <ion-input [(ngModel)]="item.from"></ion-input>
+
+        <ion-input [(ngModel)]="item.to"></ion-input>
+
+        <ion-input [(ngModel)]="item.fee"></ion-input>
+
+        <ion-icon (click)="deleteRow(shipping, i)" color="danger" name="close-circle-outline"></ion-icon>
+      </ion-item>
+    </div>
+  </div>
+  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow3(shipping)" class="new_period"
+    name="add-circle-outline"></ion-icon>
 
 </ion-content>

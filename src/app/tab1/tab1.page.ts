@@ -14,11 +14,13 @@ import { HTTP } from '@ionic-native/http/ngx';
 export class Tab1Page{
   data: any;
   von = '';
+  von1 = '';
   bis = '';
-  status = 'all';
+  bis1 = '';
+  status = '';
   message;
   message2;
-  private sub_url = "/wp-json/bookingtcg/v1/mobile/get/dashboard";
+  private sub_url = "/wp-json/ordertcg/v1/mobile/get/dashboard";
   constructor(
     private http: HttpClient,
     private storage: Storage,
@@ -38,8 +40,6 @@ export class Tab1Page{
   }
 
   public getData() {
-   
-    
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         if (shops.length == 0 || shops[index] == undefined) {
@@ -48,17 +48,17 @@ export class Tab1Page{
           return;
         }
         let access_token = shops[index].access_token;
+        
         if (this.von != '') {
-          this.von = moment(this.von).format('YYYY-MM-DD');
+          this.von1 = moment(this.von).format('DD-MM-YYYY');
         }
         if (this.bis != '') {
-          this.bis = moment(this.bis).format('YYYY-MM-DD');
+          this.bis1 = moment(this.bis).format('DD-MM-YYYY');
         }
-
+        
         let url = shops[index].domain + this.sub_url;
-        let parameter = "?token=" + access_token + "&status=" + this.status + "&von=" + this.von + "&bis=" + this.bis;
-        console.log(parameter);
-
+        let parameter = "?token=" + access_token + "&order-status=" + this.status + "&date_from=" + this.von1 + "&date_to=" + this.bis1;
+        this.message = parameter;
         this.http2.get(url + parameter, {}, {})
           .then(data => {
             let dt = data.data.split('<br />', 1);
@@ -67,33 +67,13 @@ export class Tab1Page{
               this.data = dt.data;
             } else {
               this.authService.setAuthenticated(false);
-              this.router.navigate(['login']);
             }
           })
           .catch(error => {
-
             this.authService.setAuthenticated(false);
-            this.router.navigate(['login']);
-
           });
-
-        /*
-        this.http.get(url + parameter,).subscribe((response) => {
-          console.log(response);
-          
-          if (response['status'] == "success") {
-            this.data = response['data'];
-          } else {
-            this.authService.setAuthenticated(false);
-            this.router.navigate(['login']);
-          }
-        });
-
-        */
       });
     });
-
-    
   }
 
 }
