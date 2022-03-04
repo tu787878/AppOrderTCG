@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '@ionic/storage';
 import { AuthGuardService } from '../services/auth-guard.service';
+import { Market } from '@ionic-native/market/ngx';
 
 @Component({
   selector: 'app-tab4',
@@ -16,6 +17,7 @@ export class Tab4Page implements OnInit {
     private storage: Storage,
     private authService: AuthGuardService,
     private router: Router,
+    private market: Market
   ) { }
 
   ngOnInit() {
@@ -34,12 +36,17 @@ export class Tab4Page implements OnInit {
           return;
         }
         console.log(shops[index]);
-        
         this.name = shops[index].shop_name;
         this.domain = shops[index].domain;
         this.logo = shops[index].logo;
       });
     });
   }
+
+  openAppStore() {
+    console.log("huhu");
+    this.market.open('id1584671919');
+  }
+
 
 }

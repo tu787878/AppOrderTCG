@@ -40,6 +40,7 @@ export class Tab1Page{
   }
 
   public getData() {
+    this.data = null;
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         if (shops.length == 0 || shops[index] == undefined) {
@@ -61,6 +62,8 @@ export class Tab1Page{
         this.message = parameter;
         this.http2.get(url + parameter, {}, {})
           .then(data => {
+            console.log(data);
+            data.data = data.data.replace("}null", "}");
             let dt = data.data.split('<br />', 1);
             dt = JSON.parse(dt);
             if (dt.status == "success") {
@@ -71,9 +74,9 @@ export class Tab1Page{
           })
           .catch(error => {
             this.authService.setAuthenticated(false);
+            console.log(error);
           });
       });
     });
   }
-
 }

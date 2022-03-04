@@ -5,64 +5,102 @@
     </ion-buttons>
     <ion-title>Email Einstellung</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+      <ion-text
+        (click)="saveGeneral()"
+        style="color: red;font-weight: bold;"
+        >Speichern</ion-text
+      >
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="data">
-  
-  <h1 style="margin-left: 10px;">Email Allgemeine Informationen</h1>
-  <ion-item>
-    <ion-label position="stacked">Angezeigte Name:</ion-label>
-    <ion-input [(ngModel)]="data.detail.ds_mail_name"></ion-input>
-  </ion-item>
+  <div class="container">
+    <h4 style="margin-left: 15px">Email Allgemeine Informationen</h4>
+    <ion-item lines="none">
+      <ion-label position="stacked">Angezeigte Name:</ion-label>
+      <ion-input [(ngModel)]="data.detail.ds_mail_name"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="stacked">Emailsender:</ion-label>
-    <ion-input [(ngModel)]="data.detail.ds_sender_email"></ion-input>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">Emailsender:</ion-label>
+      <ion-input [(ngModel)]="data.detail.ds_sender_email"></ion-input>
+    </ion-item>
+  </div>
 
-  <h1 style="margin-left: 10px;">Email für SHOP</h1>
-  <ion-item>
-    <ion-label position="stacked">Email beim erhalt einer Bestellung:</ion-label>
-    <ion-input [(ngModel)]="data.detail.dsmart_header_mail_order"></ion-input>
-  </ion-item>
+  <div class="container">
+    <h4 style="margin-left: 15px">Email für SHOP</h4>
+    <ion-item lines="none">
+      <ion-label style="width: auto;height: auto;" position="stacked"
+        >Email beim erhalt einer Bestellung:</ion-label
+      >
+      <ion-input [(ngModel)]="data.detail.dsmart_header_mail_order"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_text_mail_order"></ion-textarea>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating">Text:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_text_mail_order"
+      ></ion-textarea>
+    </ion-item>
+  </div>
 
-  <h1 style="margin-left: 10px;">Email für Kunden</h1>
-  <ion-item>
-    <ion-label position="stacked">Email an Kunden beim erfolgreichen Bestellung:</ion-label>
-    <ion-input [(ngModel)]="data.detail.dsmart_header_mail_order_cs"></ion-input>
-  </ion-item>
+  <div class="container">
+    <h4 style="margin-left: 10px">Email für Kunden</h4>
+    <ion-item lines="none">
+      <ion-label position="stacked"
+        >Email an Kunden beim erfolgreichen Bestellung:</ion-label
+      >
+      <ion-input
+        [(ngModel)]="data.detail.dsmart_header_mail_order_cs"
+      ></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_text_mail_order_cs"></ion-textarea>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating">Text:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_text_mail_order_cs"
+      ></ion-textarea>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="stacked">Email an Kunden, wenn Bestellung fertiggestellt ist:</ion-label>
-    <ion-input [(ngModel)]="data.detail.dsmart_header_mail_success_cs"></ion-input>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating"
+        >Email an Kunden, wenn Bestellung fertiggestellt ist:</ion-label
+      >
+      <ion-input
+        [(ngModel)]="data.detail.dsmart_header_mail_success_cs"
+      ></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_text_mail_success_cs"></ion-textarea>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating">Text:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_text_mail_success_cs"
+      ></ion-textarea>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="stacked">Email an Kunden, wenn Bestellung stoniert wird:</ion-label>
-    <ion-input [(ngModel)]="data.detail.dsmart_header_mail_cancel_cs"></ion-input>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="floating"
+        >Email an Kunden, wenn Bestellung stoniert wird:</ion-label
+      >
+      <ion-input
+        [(ngModel)]="data.detail.dsmart_header_mail_cancel_cs"
+      ></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_text_mail_cancel_cs"></ion-textarea>
-  </ion-item>
-  
+    <ion-item lines="none">
+      <ion-label position="stacked">Text:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_text_mail_cancel_cs"
+      ></ion-textarea>
+    </ion-item>
+  </div>
 </ion-content>

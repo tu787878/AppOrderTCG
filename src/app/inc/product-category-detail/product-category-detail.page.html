@@ -1,0 +1,109 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Produkt Kategorie</ion-title>
+    <ion-buttons slot="end">
+      <ion-text
+        (click)="save()"
+        style="margin-right: 5px; font-size: 20px; color: red"
+        >Speichern</ion-text
+      >
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  <div class="container">
+    <ion-item lines="none">
+      <ion-label position="stacked">Kategorie Name:</ion-label>
+      <ion-input [(ngModel)]="data.name"></ion-input>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">Kategorie Position:</ion-label>
+      <ion-input [(ngModel)]="data.category_pos"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="data.enable_pool=='1'" style="margin-bottom: 26px;margin-top: 26px;">
+      <ion-label>Pool Druckverteilung:</ion-label>
+      <ion-select value="{{ data.pool }}" (ionChange)="onCountryChaged($event)">
+        <ion-select-option *ngFor="let p of data.pools" value="{{p.term_id}}">{{p.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div class="block">
+      <div class="container">
+        <h4>Kategorie Anzeige Einstellung</h4>
+        <div class="close_1" *ngFor="let item of data.tax_time; let i = index">
+          <ion-item lines="none">
+            <ion-select [(ngModel)]="item.date" placeholder="">
+              <div *ngFor="let day of day_of_week">
+                <ion-select-option [value]="day.value"
+                  >{{day.text}}</ion-select-option
+                >
+              </div>
+            </ion-select>
+          </ion-item>
+          <div class="n2">
+            <ion-item lines="none">
+              <ion-datetime
+                displayFormat="HH:mm"
+                [(ngModel)]="item.open"
+                placeholder="von"
+              ></ion-datetime>
+              <ion-datetime
+                displayFormat="HH:mm"
+                [(ngModel)]="item.close"
+                placeholder="bis"
+              ></ion-datetime>
+              <ion-icon
+                (click)="deleteRow(data.tax_time,i)"
+                color="danger"
+                name="close-circle-outline"
+              ></ion-icon>
+            </ion-item>
+          </div>
+        </div>
+        <ion-icon
+          style="margin-left: 20px; margin-top: 10px; font-size: 25px"
+          (click)="newRow2(data.tax_time)"
+          class="new_period"
+          name="add-circle-outline"
+        ></ion-icon>
+      </div>
+      <div class="container">
+        <h4>Kategorie Bild</h4>
+        <ion-img [src]="data.term_image"></ion-img>
+
+        <ion-row>
+          <ion-col text-center>
+            <h3>Kategorie Bild ändern</h3>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col text-center>
+            <ion-button (click)="getImages()">Bild wählen</ion-button>
+          </ion-col>
+        </ion-row>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <!-- More Pinterest floating gallery style -->
+              <div class="images">
+                <div class="one-image" *ngFor="let img of imageResponse">
+                  <ion-img src="{{img}}" alt="" srcset="" style="border-radius: 10px !important;"></ion-img>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- <div class="line">
+        <ion-icon
+          style="margin-left: 20px; margin-top: 10px; font-size: 25px"
+          name="trash"
+        ></ion-icon>
+      </div> -->
+    </div>
+  </div>
+</ion-content>

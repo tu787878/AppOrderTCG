@@ -42,6 +42,7 @@ export class DiscountPage implements OnInit {
 
         this.http2.get(url + parameter, {}, {})
           .then(data => {
+            data.data = data.data.replace("}null", "}");
             let dt = data.data.split('<br />', 1);
             dt = JSON.parse(dt);
             if (dt.status == "success") {
@@ -155,8 +156,10 @@ export class DiscountPage implements OnInit {
           detail: this.data.detail
         }, {})
         .then((data) => {
-          console.log(data);
+          
+          data.data = data.data.replace("}null", "}");
           let dt = data.data.split('<br />', 1);
+          console.log(dt);
           dt = JSON.parse(dt);
           this.mess = data[0];
           if (dt.status == "success") {
@@ -166,7 +169,9 @@ export class DiscountPage implements OnInit {
             this.toastFailed(data);
           }
         })
-        .catch((error) => {
+          .catch((error) => {
+          console.log(error);
+          
           this.toastFailed(error);
         });
       });
@@ -175,7 +180,7 @@ export class DiscountPage implements OnInit {
 
   async toastSuccess() {
     const toast = await this.toastController.create({
-      message: 'Allgemein wurde aktuelieren!',
+      message: 'Alles wurde aktuelieren!',
       duration: 2000,
       color: 'success'
     });

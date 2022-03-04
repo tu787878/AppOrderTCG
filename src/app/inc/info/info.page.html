@@ -5,47 +5,89 @@
     </ion-buttons>
     <ion-title>Allgemein</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+      <ion-text
+        (click)="saveGeneral()"
+        style="color: red;font-weight: bold;"
+        >Speichern</ion-text
+      >
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="data">
+  <div class="container">
+    <ion-item lines="none">
+      <ion-label position="stacked">Zusatzstoffe:</ion-label>
+      <ion-textarea
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_taxonomy_text"
+      ></ion-textarea>
+    </ion-item>
+  </div>
+  <div class="container">
+    <ion-item lines="none">
+      <ion-label position="stacked"
+        >Text für Erfolgreicher Bestellungsseite:</ion-label
+      >
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_thankyou_text"
+      ></ion-textarea>
+    </ion-item>
+  </div>
+
+  <div class="container">
+    <ion-item lines="none">
+      <ion-label position="stacked">AGB Pfad Einstellung:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_term_text"
+      ></ion-textarea>
+    </ion-item>
+  </div>
+
+  <div class="container">
+    <ion-item>
+      <ion-label position="stacked">Warenkorb Information Text:</ion-label>
+      <ion-textarea
+        lines="none"
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.dsmart_cart_text"
+      ></ion-textarea>
+    </ion-item>
+  </div>
+
+  <div class="container">
+    <h4>Shop Info-Banner</h4>
+    <ion-item lines="none">
+      <ion-label> Info-Banner Anzeigen?</ion-label>
+      <ion-checkbox
+        [(ngModel)]="show_notify"
+        color="primary"
+        slot="start"
+      ></ion-checkbox>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">Banner text</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.notify_text"
+      ></ion-textarea>
+    </ion-item>
   
-  <ion-item>
-    <ion-label position="floating">Zusatzstoffe:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_taxonomy_text"></ion-textarea>
-  </ion-item>
+    <ion-item lines="none">
+      <ion-label position="stacked">Close shop text:</ion-label>
+      <ion-textarea
+        rows="3"
+        cols="20"
+        [(ngModel)]="data.detail.close_shop_text"
+      ></ion-textarea>
+    </ion-item>
+  </div>
 
-  <ion-item>
-    <ion-label position="floating">Text für Erfolgreicher Bestellungsseite:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_thankyou_text"></ion-textarea>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">AGB Pfad Einstellung:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_term_text"></ion-textarea>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Warenkorb Information Text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.dsmart_cart_text"></ion-textarea>
-  </ion-item>
-
-  <h2>Shop Info-Banner</h2>
-  <ion-item>
-    <ion-label> Info-Banner Anzeigen?</ion-label>
-    <ion-checkbox [(ngModel)]="show_notify" color="primary" slot="start"></ion-checkbox>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Banner text</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.notify_text"></ion-textarea>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">Close shop text:</ion-label>
-    <ion-textarea rows="3" cols="20" [(ngModel)]="data.detail.close_shop_text"></ion-textarea>
-  </ion-item>
   
 </ion-content>

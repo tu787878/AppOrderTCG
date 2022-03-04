@@ -3,80 +3,85 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title> 
-      Bestellungen
-    </ion-title>
+    <ion-title> Bestellungen </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <div class="filter">
     <ion-item>
       <ion-label>DD MM YYYY</ion-label>
-      <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "von" displayFormat="MM DD YYYY" placeholder="Von"></ion-datetime>
+      <ion-datetime
+        (ionChange)="changeFilter()"
+        [(ngModel)]="von"
+        displayFormat="DD MM YYYY"
+        placeholder="Von"
+      ></ion-datetime>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
       <ion-label>DD MM YYYY</ion-label>
-      <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "bis" displayFormat="MM DD YYYY" placeholder="Bis"></ion-datetime>
-    </ion-item>
-    <ion-item style="margin-bottom: 26px;">
-      <ion-label>Status</ion-label>
-      <ion-select (ionChange)="changeFilter()" [(ngModel)] = "status" placeholder="Alle">
-        <ion-select-option value="">Alle</ion-select-option>
-        <ion-select-option value="processing">In Bearbeitung</ion-select-option>
-        <ion-select-option value="completed">Fertigstellen</ion-select-option>
-        <ion-select-option value="cancelled">Abbrechung</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-datetime
+        (ionChange)="changeFilter()"
+        [(ngModel)]="bis"
+        displayFormat="MM DD YYYY"
+        placeholder="Bis"
+      ></ion-datetime>
+    </ion-item> -->
   </div>
 
-  <div *ngIf="data">
-    <div *ngFor="let e of data.detail" class="live-event">
-  
+  <div *ngIf="data" style="margin-top: 26px">
+    <div *ngIf="!data.detail">
+      <h4 style="margin-left: 15px;">Keine Bestellung!</h4>
+    </div>
+    <div
+      *ngFor="let e of data.detail"
+      
+      class="live-event"
+    >
       <div class="info">
-        <div class="content">
+        <div [routerLink]="['order', e.id]" class="content">
           <h6>{{e.name}}</h6>
-  
+
           <p class="stats">
-            <span><ion-icon name="call-outline"></ion-icon>&nbsp;{{e.phone}}</span>
+            <span
+              >{{e.phone}}</span
+            >
           </p>
-  
-          <p class="location"><ion-icon name="bag-outline"></ion-icon>&nbsp;{{e.order}}&nbsp;-&nbsp;{{e.total}}</p>
-  
-          <div class="additional-info">
-            <div class="attendees">
-              <p>Email: {{e.email}}</p>
-            </div>
-          </div>
+
+          <!-- <p class="location"><ion-icon name="bag-outline"></ion-icon>&nbsp;{{e.order}}&nbsp;-&nbsp;{{e.total}}</p> -->
         </div>
-  
-        <div class="indicator pending" *ngIf="e.status == 'pending'">
-          <div>{{e.date}}</div>
-          <p>Steht aus</p>
-        </div>
-        <div class="indicator processing" *ngIf="e.status == 'processing'">
-          <div>{{e.date}}</div>
-          <p>In Bearbeitung</p>
-        </div>
-        <div class="indicator cancelled" *ngIf="e.status == 'cancelled'">
-          <div>{{e.date}}</div>
-          <p>Abbrechen</p>
-        </div>
-        <div class="indicator completed" *ngIf="e.status == 'completed'">
-          <div>{{e.date}}</div>
-          <p>Fertigstellen</p>
-         
+
+        <div class="indicator">
+          <div [routerLink]="['order', e.id]" class="date-container">{{e.date}}</div>
+          <p (click)="presentAlertConfirm(e.id)">Löschen</p>
         </div>
       </div>
     </div>
     <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
       <ion-infinite-scroll-content
         loadingSpinner="bubbles"
-        loadingText="mehr laden...">
+        loadingText="mehr laden..."
+      >
       </ion-infinite-scroll-content>
     </ion-infinite-scroll>
   </div>
 
+
+
   <div *ngIf="!data">
-    <h3 class="no_data">Keine Bestellung!</h3>
+    <div class="info">
+      <div  class="content">
+        <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+
+        <p class="stats">
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+
+        <!-- <p class="location"><ion-icon name="bag-outline"></ion-icon>&nbsp;{{e.order}}&nbsp;-&nbsp;{{e.total}}</p> -->
+      </div>
+
+      <div class="indicator pending">
+        <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+      </div>
+    </div>
   </div>
 </ion-content>

@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'help',
     loadChildren: () => import('./inc/help/help.module').then( m => m.HelpPageModule)
   },
-  
+
 ];
 @NgModule({
   imports: [

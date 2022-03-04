@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+   
+    <ion-title> 
+      Produkte Karegorien
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+
+  <!-- <div class="filter">
+    <ion-item style="font-size: 20px;">
+      <ion-label>Suche</ion-label>
+      <ion-input [(ngModel)] = "suche"></ion-input>
+    </ion-item>
+    <ion-button (click)="changeFilter()" style="margin-bottom: 30px;margin-left: 10px;">Suche</ion-button>
+  </div> -->
+
+  <div *ngIf="data" style="margin-top: 20px;">
+    <div *ngFor="let e of data.detail" [routerLink]="['product-category-detail',e.term_id]" class="live-event">
+  
+      <div class="info">
+        <div class="content">
+          <h6>{{e.name}}</h6>
+  
+          <!-- <p class="stats">
+            <span><ion-icon name="call-outline"></ion-icon>&nbsp;{{e.phone}}</span>
+          </p>
+   -->
+          <!-- <p class="location"><ion-icon name="bag-outline"></ion-icon>&nbsp;{{e.order}}&nbsp;-&nbsp;{{e.total}}</p> -->
+  
+          <!-- <div class="additional-info">
+            <div class="attendees">
+              <p>Email: {{e.email}}</p>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="mehr laden...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+    <!-- <h1>{{xx}}</h1> -->
+  </div>
+
+  <div *ngIf="!data">
+    <h3 class="no_data">Kein Betreff!</h3>
+  </div>
+</ion-content>

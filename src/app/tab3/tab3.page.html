@@ -4,39 +4,69 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title> 
-      Bewertungen
+      Produkt
     </ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div *ngIf="!data">
 
+  <ion-item *ngIf="data" style="margin-bottom: 26px;">
+    <ion-label>Kategorie</ion-label>
+    <ion-select (ionChange)="changeFilter()" [(ngModel)] = "cat" placeholder="Alle">
+      <ion-select-option value="">Alle</ion-select-option>
+      <ion-select-option *ngFor="let cat of data.categories" value="{{cat.slug}}">{{cat.name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+
+  <div class="filter">
+    <ion-item style="font-size: 20px;">
+      <ion-label>Suche</ion-label>
+      <ion-input [(ngModel)] = "suche"></ion-input>
+    </ion-item>
+    <ion-button (click)="changeFilter()" style="margin-bottom: 30px;margin-left: 10px;">Suche</ion-button>
   </div>
+
   <div *ngIf="data">
-    
-    <ion-item [routerLink]="['parent']">
-      <ion-icon slot="start" name="color-filter-outline"></ion-icon>
-      <ion-label>Übergeordnete Kategorien</ion-label>
-      <ion-note slot="end" color="primary">{{data.parent}}</ion-note>
-    </ion-item>
+    <div *ngFor="let e of data.detail"  class="live-event">
   
-    <ion-item [routerLink]="['category']">
-      <ion-icon slot="start" name="copy-outline"></ion-icon>
-      <ion-label>Kategorien</ion-label>
-      <ion-note slot="end" color="secondary">{{data.category}}</ion-note>
-    </ion-item>
+      <div class="info">
+        <div class="content" [routerLink]="['product-detail',e.ID]">
+          <h6>{{e.post_title}}</h6>
   
-    <ion-item [routerLink]="['service']">
-      <ion-icon slot="start" name="flower-outline"></ion-icon>
-      <ion-label>Services</ion-label>
-      <ion-note slot="end" color="tertiary">{{data.service}}</ion-note>
-    </ion-item>
+          <!-- <p class="stats">
+            <span><ion-icon name="call-outline"></ion-icon>&nbsp;{{e.phone}}</span>
+          </p>
+   -->
+          <!-- <p class="location"><ion-icon name="bag-outline"></ion-icon>&nbsp;{{e.order}}&nbsp;-&nbsp;{{e.total}}</p> -->
   
-    <ion-item [routerLink]="['employee']">
-      <ion-icon slot="start" name="person-add-outline"></ion-icon>
-      <ion-label>Mitarbeiter</ion-label>
-      <ion-note slot="end" color="success">{{data.employee}}</ion-note>
-    </ion-item>
+          <!-- <div class="additional-info">
+            <div class="attendees">
+              <p>Email: {{e.email}}</p>
+            </div>
+          </div> -->
+        </div>
+  
+        <div (click)="changeStockStatus(e.ID, e.stock)" *ngIf="e.stock == 'outstock'" class="indicator pending">
+          <div *ngIf="e.stock == 'outstock'">ausverkauft</div>
+          <!-- <p>{{e.stock}}</p> -->
+        </div>
+        <div (click)="changeStockStatus(e.ID, e.stock)" *ngIf="e.stock != 'outstock'" class="indicator completed">
+          <div>auf Lager</div>
+          <!-- <p>{{e.stock}}</p> -->
+        </div>
+       
+      </div>
+    </div>
+    <!-- <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="mehr laden...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
+    <!-- <h1>{{xx}}</h1> -->
   </div>
-  
+
+  <div *ngIf="!data">
+    <h3 class="no_data">Kein Betreff!</h3>
+  </div>
 </ion-content>

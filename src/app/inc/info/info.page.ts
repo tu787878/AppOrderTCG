@@ -41,6 +41,7 @@ export class InfoPage implements OnInit {
 
         this.http2.get(url + parameter, {}, {})
           .then(data => {
+            data.data = data.data.replace("}null", "}");
             let dt = data.data.split('<br />', 1);
             dt = JSON.parse(dt);
             if (dt.status == "success") {
@@ -76,6 +77,7 @@ export class InfoPage implements OnInit {
         }, {})
         .then((data) => {
           console.log(data);
+          data.data = data.data.replace("}null", "}");
           let dt = data.data.split('<br />', 1);
           dt = JSON.parse(dt);
           if (dt.status == "success") {
@@ -114,7 +116,7 @@ export class InfoPage implements OnInit {
 
   async toastSuccess() {
     const toast = await this.toastController.create({
-      message: 'Allgemein wurde aktuelieren!',
+      message: 'Alles wurde aktuelieren!',
       duration: 2000,
       color: 'success'
     });

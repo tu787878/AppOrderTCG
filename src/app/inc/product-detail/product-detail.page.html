@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Produkt Bearbeiten</ion-title>
+    <ion-buttons slot="end">
+      <ion-text (click)="save()" style="font-weight: bold; color: red"
+        >Speichern</ion-text
+      >
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  <div class="container">
+    <h4>Produkt Name</h4>
+    <ion-item lines="none">
+      <ion-input [(ngModel)]="data.product.post_title"></ion-input>
+    </ion-item>
+    <ion-item *ngIf="data.enable_pool=='1'" style="margin-bottom: 26px;margin-top: 26px;">
+      <ion-label>Pool</ion-label>
+      <ion-select value="{{ term }}" (ionChange)="onCountryChaged($event)">
+        <ion-select-option *ngFor="let p of data.pools" value="{{p.term_id}}">{{p.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <h4>Produkt Bild</h4>
+    <ion-img [src]="data.image"></ion-img>
+
+    <h4>Produkt Bild ändern</h4>
+    <ion-row>
+      <ion-col text-center>
+        <ion-button (click)="getImages()">Bild wählen</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <!-- More Pinterest floating gallery style -->
+          <div class="images">
+            <div class="one-image" *ngFor="let img of imageResponse">
+              <ion-img
+                src="{{img}}"
+                alt=""
+                srcset=""
+                style="border-radius: 10px !important"
+              ></ion-img>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <!-- <div class="line">
+        <ion-icon
+          style="margin-left: 20px; margin-top: 10px; font-size: 25px"
+          name="trash"
+        ></ion-icon>
+      </div> -->
+  </div>
+</ion-content>
+
+<ion-content *ngIf="!data">
+  <div class="container">
+    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+    <ion-item lines="none">
+      <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+    </ion-item>
+    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+    <ion-avatar slot="start">
+      <ion-skeleton-text animated></ion-skeleton-text>
+    </ion-avatar>
+
+    <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+    <ion-row>
+      <ion-col text-center>
+        <ion-skeleton-text animated style="width: 40%"></ion-skeleton-text>
+      </ion-col>
+    </ion-row>
+   
+
+    <!-- <div class="line">
+        <ion-icon
+          style="margin-left: 20px; margin-top: 10px; font-size: 25px"
+          name="trash"
+        ></ion-icon>
+      </div> -->
+  </div>
+</ion-content>

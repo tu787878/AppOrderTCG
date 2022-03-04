@@ -1,47 +1,129 @@
-.day{
-    display: flex;
-    margin-left: 10px;
-    .time{
-        width: 45%;
-    }
-
+.day {
+  display: flex;
+  .time {
+    width: 45%;
+  }
+  .col{
+    width: 50%;
+  }
 }
 
-.close_2{
+.day2 {
+  display: flex;
+
+  .col{
+    margin-left: 20px;
+    width: 50%;
+  }
+  ion-input{
+    margin-right: 10px;
+    width: 45%;
+  }
+}
+
+ion-title{
+    font-weight: bold !important;
+}
+
+h2, h3, h4, h5{
+    margin-left: 15px;
+    font-weight: bold !important;
+}
+
+ion-label, p{
+  font-weight: lighter;
+}
+
+// .block {
+//   // margin-bottom: 45px;
+// }
+
+// ion-label{
+//     font-weight: bold;
+// }
+
+.line {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: rgba(10, 10, 10, 0.664);
+  height: 2px;
+  width: 94%;
+  align-self: center;
+  margin-left: 3%;
+}
+
+.close_2 {
+  width: 100% !important;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 12px 2px rgba(0,0,0,0.16);
+  padding: 15px;
+  margin-top: 20px;
+}
+.custom{
+width: 80%;
+margin-left: 20PX;
+ p{
+   margin-left: 0px !important;
+ }
+}
+.new {
+  display: flex;
+  width: 100% !important;
+
+  ion-item {
     width: 100% !important;
+  }
+
+  ion-datetime {
+    width: 45% !important;
+    margin-right: 5px;
+  }
 }
-.new{
-    display: flex;
-    margin-left: 5px;
+
+.n2 {
+  display: flex;
+  width: 100% !important;
+
+  ion-item {
     width: 100% !important;
+  }
 
-    ion-item{
-        width: 100% !important;
-    }
-
-    ion-datetime{
-        width: 30% !important;
-    }
+  ion-datetime {
+    width: 45% !important;
+    margin-right: 5px;
+  }
 }
 
-.n2{
-    display: flex;
-    margin-left: 5px;
-    width: 100% !important;
-
-    ion-item{
-        width: 100% !important;
-    }
-
-    ion-datetime{
-        width: 45% !important;
-    }
+h3 {
+  margin-left: 10px;
 }
 
-h3{
-    margin-left: 10px;
+h1 {
+  margin-left: 10px;
 }
 
-h1{
-    margin-left: 10px;
+
+.container{
+  margin: 20px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 3px 12px 2px rgba(0,0,0,0.16);
+
+  p{
+    margin-left: 20px;
+    margin-bottom: 5px !important;
+  }
+}
+
+
+ion-input, ion-datetime{
+   border-radius: 10px;
+    // background-color: rgba(215, 215, 215, 0.112);
+    border: 1px solid rgb(189, 187, 187);
+    margin-top: 10px;
+    padding-left: 10px !important;
+    width: 100%;
+
 }

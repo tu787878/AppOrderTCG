@@ -13,8 +13,9 @@ import { HTTP } from '@ionic-native/http/ngx';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private sub_url = "/wp-json/ordertcg/v1/mobile/auth";
-  input = { domain: "http://ordertcg.local/", code: "TCG-kpjnswy4" };
+  private sub_url = '/wp-json/ordertcg/v1/mobile/auth';
+  //input = { domain: "http://ordertcg.local/", code: "TCG-kpjnswy4" };
+  input = { domain: '', code: '' };
   private loading;
   message;
   message2;
@@ -47,27 +48,31 @@ export class LoginPage implements OnInit {
 // TCG-ko5p4gas	
   addShop(){
     this.presentLoading();
-    let domain = this.input['domain']
+    // let domain =  this.input['domain'];
+    let domain = 'https://' + this.input['domain'];
     let url = domain + this.sub_url;
     let code = this.input['code'];
 
     this.http2.post(url, { code: code }, { })
     .then((data) => {
-      console.log(data);
+      console.log("hihi + \n");
+      console.log(data.data);
+      data.data = data.data.replace("}null", "}");
+      console.log("hihi2 + \n");
       this.message2 = data.data;
       this.message2 = this.message2.split('<br />', 1);
       let response = JSON.parse(this.message2);
       this.message2 = response.status;
-      if (response.status == "success") {
+      if (response.status == 'success') {
         this.storage.get('shops').then((val) => {
           console.log(val);
 
           let temp: { domain: string, shop_name: string, access_token: string, logo: string } =
           {
-            "domain": domain,
-            "shop_name": response.shop_name,
-            "access_token": response.access_token,
-            "logo": response.logo
+            'domain': domain,
+            'shop_name': response.shop_name,
+            'access_token': response.access_token,
+            'logo': response.logo
           }
             ;
           if (val.length == 0) {
@@ -75,7 +80,7 @@ export class LoginPage implements OnInit {
             this.storage.set('shops', val);
             this.storage.set('active_shop', 0);
             this.authService.setAuthenticated(true);
-            this.router.navigate(["tabs/tab4"]);
+            this.router.navigate(['tabs/tab4']);
             this.loading.dismiss();
           } else {
             if (val.findIndex((e) => e.domain === domain) == -1) {
@@ -83,22 +88,22 @@ export class LoginPage implements OnInit {
               this.storage.set('shops', val);
               this.storage.set('active_shop', val.length - 1);
               this.authService.setAuthenticated(true);
-              this.router.navigate(["tabs/tab1"]);
+              this.router.navigate(['tabs/tab4']);
               this.loading.dismiss();
             } else {
               this.authService.setAuthenticated(true);
-              this.router.navigate(["tabs/tab1"]);
+              this.router.navigate(['tabs/tab4']);
               this.loading.dismiss();
             }
           }
         });
       } else {
-        this.message = "Code ist falsch!";
+        this.message = 'Code ist falsch!';
         this.loading.dismiss();
       }
     })
     .catch((error) => {
-      this.message = "Domain ist falsch!";
+      this.message = 'Domain ist falsch!';
       this.loading.dismiss();
     });
       
@@ -157,6 +162,6 @@ export class LoginPage implements OnInit {
   }
 
   backToDashboard() {
-    this.router.navigate(["tabs/tab1"]);
+    this.router.navigate(['tabs/tab4']);
   }
 }

@@ -5,52 +5,77 @@
     </ion-buttons>
     <ion-title>Zipcode</ion-title>
     <ion-buttons slot="end">
-      <ion-text (click)="saveGeneral()" style="margin-right: 5px;font-size: 20px;color: #050505;">Speichern</ion-text>
+      <ion-text
+        (click)="saveGeneral()"
+        style="color: red;font-weight: bold;"
+        >Speichern</ion-text
+      >
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content *ngIf="data">
-  
-  <ion-list>
-    <ion-radio-group [(ngModel)]="data.detail.zipcode_status" allow-empty-selection="false" name="radio-group">
-      <ion-list-header>
-        <ion-label>PLZ Funktion</ion-label>
-      </ion-list-header>
-      <ion-item>
-        <ion-label>Aus</ion-label>
-        <ion-radio slot="start" name="plz" value="off"></ion-radio>
-      </ion-item>
-      <ion-item>
-        <ion-label>An</ion-label>
-        <ion-radio slot="start" name="plz" value="on"></ion-radio>
-      </ion-item>
-    </ion-radio-group>
-  </ion-list>  
-
-  <ion-item>
-    <ion-label position="stacked">Link für Shortcode:</ion-label>
-    <ion-input [(ngModel)]="data.detail.next_link_shortcode"></ion-input>
-  </ion-item>
-
-  <div class="label flex">
-    <ion-label position="stacked">PLZ</ion-label>
-    <ion-label position="stacked">Mindesbestellwert</ion-label>
-    <ion-label position="stacked">Lieferkosten</ion-label>
-  </div>
-  <div class="hi" *ngFor="let item of data.detail.zipcode_data; let i = index">
-    <div class="value flex">
-      <ion-item>
-        <ion-input [(ngModel)]="item.zipcode"></ion-input>
-
-        <ion-input [(ngModel)]="item.minium_order"></ion-input>
-
-        <ion-input [(ngModel)]="item.price"></ion-input>
-
-        <ion-icon (click)="deleteRow(data.detail.zipcode_data,i)" color="danger" name="close-circle-outline"></ion-icon>
+  <div class="container">
+    <ion-list>
+      <ion-radio-group
+        [(ngModel)]="data.detail.zipcode_status"
+        allow-empty-selection="false"
+        name="radio-group"
+      >
+        <ion-list-header>
+          <ion-label>PLZ Funktion</ion-label>
+        </ion-list-header>
+        <ion-item lines="none">
+          <ion-label>Aus</ion-label>
+          <ion-radio slot="start" name="plz" value="off"></ion-radio>
         </ion-item>
-    </div>
-  </div>
-  <ion-icon style="margin-left: 20px;margin-top:10px;font-size: 25px;" (click)="newRow(data.detail.zipcode_data)" class="new_period"  name="add-circle-outline"></ion-icon>
 
+        <ion-item lines="none">
+          <ion-label>An</ion-label>
+          <ion-radio slot="start" name="plz" value="on"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+    </ion-list>
+  </div>
+
+  <div class="container">
+    <ion-item lines="none" class="xx">
+      <ion-label position="stacked">Link für Shortcode:</ion-label>
+      <ion-input [(ngModel)]="data.detail.next_link_shortcode"></ion-input>
+    </ion-item>
+  </div>
+
+  <div class="container">
+    <div class="label flex">
+      <ion-label position="stacked">PLZ</ion-label>
+      <ion-label position="stacked">Mindesbestellwert</ion-label>
+      <ion-label position="stacked">Lieferkosten</ion-label>
+    </div>
+    <div
+      class="hi"
+      *ngFor="let item of data.detail.zipcode_data; let i = index"
+    >
+      <div class="value flex">
+        <ion-item>
+          <ion-input [(ngModel)]="item.zipcode"></ion-input>
+
+          <ion-input [(ngModel)]="item.minium_order"></ion-input>
+
+          <ion-input [(ngModel)]="item.price"></ion-input>
+
+          <ion-icon
+            (click)="deleteRow(data.detail.zipcode_data,i)"
+            color="danger"
+            name="close-circle-outline"
+          ></ion-icon>
+        </ion-item>
+      </div>
+    </div>
+    <ion-icon
+      style="margin-left: 20px; margin-top: 10px; font-size: 25px"
+      (click)="newRow(data.detail.zipcode_data)"
+      class="new_period"
+      name="add-circle-outline"
+    ></ion-icon>
+  </div>
 </ion-content>

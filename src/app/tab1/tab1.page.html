@@ -14,20 +14,24 @@
     <div class="filter">
       <ion-item>
         <ion-label>DD MM YYYY</ion-label>
-        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "von" displayFormat="MM DD YYYY" placeholder="Von"></ion-datetime>
+        <ion-datetime  [(ngModel)] = "von" displayFormat="DD MM YYYY" placeholder="Von"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>DD MM YYYY</ion-label>
-        <ion-datetime (ionChange)="changeFilter()" [(ngModel)] = "bis" displayFormat="MM DD YYYY" placeholder="Bis"></ion-datetime>
+        <ion-datetime  [(ngModel)] = "bis" displayFormat="DD MM YYYY" placeholder="Bis"></ion-datetime>
       </ion-item>
-      <ion-item>
+
+        <ion-button style="margin-top: 10px;margin-left: 20px;" (click)="changeFilter()">
+          Bestätigen
+        </ion-button>
+      <!-- <ion-item>
         <ion-label>Status</ion-label>
         <ion-select (ionChange)="changeFilter()" [(ngModel)] = "status" placeholder="Alle">
           <ion-select-option value="">Alle</ion-select-option>
           <ion-select-option value="processing">Warten</ion-select-option>
           <ion-select-option value="completed">Fertig</ion-select-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
     </div>
     
     <ion-card>
@@ -37,7 +41,7 @@
             Verdienen
           </div>
           <div class="data">
-            € {{data.detail.total_all}}
+             {{data.detail.total_all}}
           </div>
         </div>
         <div class="right">

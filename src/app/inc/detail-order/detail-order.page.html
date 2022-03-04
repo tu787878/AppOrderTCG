@@ -1,0 +1,226 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [text]="'Zurück'"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Bestellung</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="data">
+  <h3 style="margin-left: 25px">Kundeninformationen</h3>
+  <div class="container">
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Bestellungnummer:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.id}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Nachname:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.customer_name1}}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Vorname:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.customer_name2}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Email Adresse:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.customer_email}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="data.detail.shipping_method == 'shipping'" class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Etage:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.customer_etage}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Telefonnummer:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.customer_phone}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Versandart:</ion-label>
+      </ion-col>
+      <ion-col  col-4 *ngIf="data.detail.shipping_method == 'shipping'">
+        <ion-label>Lieferung</ion-label>
+      </ion-col>
+      <ion-col col-4 *ngIf="data.detail.shipping_method == 'direct'">
+        <ion-label>Abholung</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="data.detail.shipping_method == 'shipping'" class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Lieferanschrift::</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.user_location}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="data.detail.shipping_method == 'shipping'" class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Tag:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.user_delivery_date}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Liefer-/Abholzeit:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label *ngIf="data.detail.shipping_method == 'shipping'">{{data.detail.user_delivery_time}}</ion-label>
+        <ion-label>{{data.detail.user_time}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Bestellnotiz:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>{{data.detail.more_additional}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Bewirtungsbeleg als Bon:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label *ngIf="data.detail.bab == '1'">Ja</ion-label>
+        <ion-label *ngIf="data.detail.bab != '1'">Nein</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Aternative Rechnungsaddresse:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label *ngIf="data.ar.r_zipcode == ''">Nein</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="data.ar.r_zipcode != ''" class="border-bottom">
+      <ion-col col-4>
+        <ion-label *ngIf="data.ar.r_prefix == '0'"
+          >Herr {{data.ar.r_last_name}} {{data.ar.r_first_name}}</ion-label
+        >
+        <ion-label *ngIf="data.ar.r_prefix != '0'"
+          >Frau {{data.ar.r_last_name}} {{data.ar.r_first_name}}</ion-label
+        >
+        <br />
+        <ion-label>{{data.ar.r_company}}</ion-label>
+        <br />
+        <ion-label>{{data.ar.r_street}}</ion-label>
+        <br />
+        <ion-label>{{data.ar.r_zipcode}} {{data.ar.r_city}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <h3 style="margin-left: 25px">Bestellinformation</h3>
+  <div class="container">
+    <ion-row class="title" style="border-bottom: groove">
+      <ion-col col-4>
+        <ion-label>Produkt</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>Gesamtsumme</ion-label>
+      </ion-col>
+    </ion-row>
+    <div class="product" *ngFor="let item of data.item">
+      <ion-row class="main">
+        <ion-col col-4>
+          <ion-label>{{item.quantity}} x {{item.title}}</ion-label>
+        </ion-col>
+        <ion-col col-4>
+          <ion-label>€ {{item.price}}</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="item.variable">
+        <ion-col col-4>
+          <p class="tu">AUSGEWÄHLTE PRODUKT</p>
+          <ion-label style="margin-top: 0px !important" class="tai2"
+            >{{item.variableName}} : € {{item.variablePrice}}</ion-label
+          >
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="item.extra">
+        <ion-col col-4>
+          <p class="tu">EXTRA</p>
+          <ion-label class="tai2"
+            >{{item.extraName}}(+{{item.extraPrice}}) x
+            {{item.extraQuantity}}</ion-label
+          >
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Lieferungskosten:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>€ {{data.detail.shipping_fee}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Zwischensumme:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>€ {{data.detail.subtotal}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Gesamtsumme:</ion-label>
+      </ion-col>
+      <ion-col col-4>
+        <ion-label>€ {{data.detail.total}}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row class="border-bottom">
+      <ion-col col-4>
+        <ion-label>Bezahlverfahren:</ion-label>
+      </ion-col>
+      <ion-col col-4 *ngIf="data.detail.method == 'cash'">
+        <ion-label>Bar</ion-label>
+      </ion-col>
+      <ion-col col-4 *ngIf="data.detail.method != 'cash'">
+        <ion-label>{{data.detail.method}}</ion-label>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-content>
+<ion-content *ngIf="!data">
+  <ion-col col-4>
+    <ion-skeleton-text animated style="width: 28%"></ion-skeleton-text>
+  </ion-col>
+  <ion-col col-4>
+    <ion-skeleton-text animated style="width: 18%"></ion-skeleton-text>
+  </ion-col>
+  <ion-col col-4>
+    <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+  </ion-col>
+</ion-content>
