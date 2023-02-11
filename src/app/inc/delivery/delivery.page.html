@@ -72,25 +72,27 @@
     </div>
   </div>
 
-  <div class="block">
+  <div *ngIf="dsmart_method_ship || dsmart_method_direct" class="block">
     <div class="container">
       <h4>Bearbeitungszeit</h4>
-      <ion-item lines="none">
+      <ion-item *ngIf="dsmart_method_ship" class="show" lines="none">
         <ion-label position="stacked"
           >Bearbeitungszeit für Lieferung:</ion-label
         >
         <ion-input [(ngModel)]="data.detail.delay_time"></ion-input>
       </ion-item>
-      <ion-item lines="none">
+      
+      <ion-item *ngIf="dsmart_method_direct" class="show" lines="none">
         <ion-label position="stacked"
           >Bearbeitungszeit für Abholung :</ion-label
         >
         <ion-input [(ngModel)]="data.detail.delay_delivery"></ion-input>
       </ion-item>
+     
     </div>
   </div>
 
-  <div class="block">
+  <div *ngIf="dsmart_method_ship" class="block show">
     <div class="container">
       <h4>Öffnungszeiten Lieferung</h4>
       <!-- {{mess}} -->
@@ -116,7 +118,7 @@
     </div>
   </div>
 
-  <div class="block">
+  <div *ngIf="dsmart_method_direct" class="block show">
     <div class="container">
       <h4>Öffnungszeiten Abholung</h4>
       <div *ngFor="let day of open_2" class="open_1">
@@ -141,7 +143,7 @@
     </div>
   </div>
 
-  <div class="block">
+  <div *ngIf="dsmart_method_direct" class="block show">
     <div class="container">
       <h4>Schliesszeit Abholung</h4>
       <div
@@ -186,7 +188,7 @@
     </div>
   </div>
 
-  <div class="block">
+  <div *ngIf="dsmart_method_ship" class="block show">
     <div class="container">
       <h4>Schliesszeit Lieferung</h4>
       <div
@@ -239,40 +241,59 @@
       <h4>Benutzerdefinierte Öffnungszeit</h4>
       <div
         class="close_2"
-        *ngFor="let item of data.detail.dsmart_custom_date; let i = index"
+        *ngFor="let item of data.detail.dsmart_new_custom_date; let i = index"
       >
+        <ion-select [(ngModel)]="item.status" placeholder="Öffnen/Schliessen">
+          <ion-select-option value="open">Open</ion-select-option>
+          <ion-select-option value="close">Close</ion-select-option>
+        </ion-select>
+        <ion-select [(ngModel)]="item.date_type" placeholder="Datum">
+          <ion-select-option value="single">Date</ion-select-option>
+          <ion-select-option value="multiple">Date Range</ion-select-option>
+        </ion-select>
         <ion-datetime 
           class="custom"
           displayFormat="DD-MM-YYYY"
-          [(ngModel)]="item.date"
-          placeholder="Tag"
+          [(ngModel)]="item.start_date"
+          placeholder="Von"
         ></ion-datetime>
-        <div class="new">
-          <ion-item lines="none">
-            <ion-datetime 
-              displayFormat="HH:mm"
-              [(ngModel)]="item.open"
-              placeholder="von"
-            ></ion-datetime>
-            <ion-datetime 
-              displayFormat="HH:mm"
-              [(ngModel)]="item.close"
-              placeholder="bis"
-            ></ion-datetime>
-
-            <ion-icon
-              (click)="deleteRow(data.detail.dsmart_custom_date, i)"
-              color="danger"
-              name="close-circle-outline"
-            >
-            </ion-icon>
-          </ion-item>
-        </div>
+        <ion-datetime 
+          *ngIf="item.date_type === 'multiple'"
+          class="custom"
+          displayFormat="DD-MM-YYYY"
+          [(ngModel)]="item.end_date"
+          placeholder="Bis"
+        ></ion-datetime>
+        <ion-select [(ngModel)]="item.time_type" placeholder="Datum">
+          <ion-select-option disabled ="{{item.status == 'close'}}" value="time_to_time">Uhrzeit</ion-select-option>
+          <ion-select-option value="full_day">Ganztägig (00:00 - 23:59)</ion-select-option>
+        </ion-select>
+        <ion-datetime 
+          *ngIf="item.time_type === 'time_to_time' && item.status == 'open'"
+          class="custom"
+          displayFormat="HH:mm"
+          [(ngModel)]="item.start_time"
+          placeholder="von"
+        ></ion-datetime>
+        <ion-datetime 
+          *ngIf="item.time_type === 'time_to_time' && item.status == 'open'"
+          class="custom"
+          displayFormat="HH:mm"
+          [(ngModel)]="item.end_time"
+          placeholder="bis"
+        ></ion-datetime>
+        <ion-icon
+          class="new_period delete"
+          (click)="deleteRow(data.detail.dsmart_new_custom_date, i)"
+          color="danger"
+          name="close-circle-outline"
+        >
+        </ion-icon>
       </div>
       <ion-icon
         style="margin-left: 20px; margin-top: 20px; font-size: 25px"
-        (click)="newRow2(data.detail.dsmart_custom_date)"
-        class="new_period"
+        (click)="newRow2(data.detail.dsmart_new_custom_date)"
+        class="new_period addd"
         name="add-circle-outline"
       ></ion-icon>
     </div>
@@ -285,21 +306,30 @@
       <ion-item lines="none">
         <ion-input [(ngModel)]="data.detail.dsmart_distance"></ion-input>
       </ion-item>
-
+<!-- 
       <p>Minimum Bestellung für Lieferung:</p>
       <ion-item lines="none">
         <ion-input [(ngModel)]="data.detail.dsmart_min_order"></ion-input>
-      </ion-item>
+      </ion-item> -->
+
 
       <p>Minimum Bestellung für Kostenlos Lieferung:</p>
       <ion-item lines="none">
+        <ion-label>Aktiv</ion-label>
+        <ion-checkbox
+          [(ngModel)]="dsmart_min_order_free_checkbox"
+          color="primary"
+          slot="start"
+        ></ion-checkbox>
+      </ion-item>
+      <ion-item *ngIf="dsmart_min_order_free_checkbox" class="show" lines="none">
         <ion-input [(ngModel)]="data.detail.dsmart_min_order_free"></ion-input>
       </ion-item>
 
-      <p>Standardwert für Lieferkosten:</p>
+      <!-- <p>Standardwert für Lieferkosten:</p>
       <ion-item lines="none">
         <ion-input [(ngModel)]="data.detail.dsmart_shipping_fee"></ion-input>
-      </ion-item>
+      </ion-item> -->
     </div>
   </div>
 

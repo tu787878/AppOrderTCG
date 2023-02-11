@@ -16,6 +16,7 @@ export class DeliveryPage implements OnInit {
   dsmart_method_direct: boolean;
   close_shop: boolean;
   enable_pool;
+  dsmart_min_order_free_checkbox;
   mess;
   custom = [];
 
@@ -90,17 +91,26 @@ export class DeliveryPage implements OnInit {
                 this.data.detail.dsmart_method_ship == 'on' ? true : false;
               this.enable_pool =
                 this.data.detail.enable_pool == '1' ? true : false;
+                this.dsmart_min_order_free_checkbox=this.data.detail.dsmart_min_order_free_checkbox == "1" ? true : false;
               this.dsmart_method_direct =
                 this.data.detail.dsmart_method_direct == 'on' ? true : false;
               this.close_shop =
                 this.data.detail.close_shop == 'on' ? true : false;
-              console.log(this.data.detail.dsmart_custom_date);
               if (this.data.detail.dsmart_custom_date === '') {
                 this.data.detail.dsmart_custom_date = [];
               }
-              this.data.detail.dsmart_custom_date.forEach((element) => {
-                console.log(element.date);
+              if (this.data.detail.dsmart_new_custom_date === '') {
+                this.data.detail.dsmart_new_custom_date = [];
+              }
+              
+              this.data.detail.dsmart_new_custom_date.forEach((element) => {
+                element.start_date = moment(element.start_date, "DD-MM-YYYY").toISOString();
+                element.end_date = moment(element.end_date, "DD-MM-YYYY").toISOString();
               });
+
+              // console.log(this.data.detail.dsmart_new_custom_date);
+              // console.log(this.data.detail.dsmart_custom_date);
+              
 
               this.shipping = [];
               for (
@@ -324,9 +334,13 @@ export class DeliveryPage implements OnInit {
 
   newRow2(object) {
     object.push({
-      date: '00-00-0000',
-      open: '00:00',
-      close: '00:00',
+      status: 'open',
+      date_type: 'single',
+      start_date: moment().toISOString(),
+      end_date: moment().toISOString(),
+      time_type: 'time_to_time',
+      start_time: '00:00',
+      end_time: '00:00',
     });
   }
 
@@ -392,6 +406,7 @@ export class DeliveryPage implements OnInit {
       this.data.detail.enable_pool = this.enable_pool
       ? '1'
       : '0';
+      this.data.detail.dsmart_min_order_free_checkbox=this.dsmart_min_order_free_checkbox?'1':'0';
     this.data.detail.dsmart_method_direct = this.dsmart_method_direct
       ? 'on'
       : 'off';
@@ -411,6 +426,14 @@ export class DeliveryPage implements OnInit {
       this.data.detail.dsmart_min_cs_fee[i] = this.shipping[i].min;
     }
 
+
+    this.data.detail.dsmart_new_custom_date.forEach((element) => {
+      element.start_date = moment(element.start_date).format("DD-MM-YYYY");
+      element.end_date = moment(element.end_date).format("DD-MM-YYYY");
+    });
+
+    // console.log(this.data.detail.dsmart_new_custom_date);
+    
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {
         let access_token = shops[index].access_token;

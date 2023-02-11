@@ -1,3 +1,21 @@
+.hide{
+  display: none;
+}
+
+.show{
+  display: block;
+}
+
+.delete{
+  font-size: 30px;
+  margin-left: 20px;
+  margin-top: 20px;
+}
+
+.addd{
+  font-size: 30px;
+}
+
 .day {
   display: flex;
   .time {

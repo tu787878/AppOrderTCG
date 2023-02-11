@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { HTTP } from '@ionic-native/http/ngx';
+import * as moment from 'moment';
 @Component({
   selector: 'app-discount',
   templateUrl: './discount.page.html',
@@ -15,6 +16,8 @@ export class DiscountPage implements OnInit {
   mess;
   lieferung;
   abholung;
+  discount_cod;
+  discount_shop;
   private sub_url = "/wp-json/ordertcg/v1/mobile/get/discount";
   constructor(
     private http: HttpClient,
@@ -48,6 +51,15 @@ export class DiscountPage implements OnInit {
             if (dt.status == "success") {
               this.data = dt.data;
 
+              this.discount_shop = this.data.detail.discount_shop === "on" ? true : false;
+              this.discount_cod = this.data.detail.discount_cod === "on" ? true : false;
+              if(this.data.detail.dsmart_custom_discount_date == "") this.data.detail.dsmart_custom_discount_date = [];
+              this.data.detail.dsmart_custom_discount_date.forEach((element) => {
+                element.date = moment(element.date, "DD-MM-YYYY").toISOString();
+              });
+              console.log(this.data.detail.dsmart_custom_discount_date);
+              
+              
               this.lieferung = [
                 {
                   text: "Montag",
@@ -127,6 +139,8 @@ export class DiscountPage implements OnInit {
 
   saveGeneral() {
     //this.mess = this.data.detail.zipcode_data.length;
+    this.data.detail.discount_shop = this.discount_shop ? "on" : "off";
+    this.data.detail.discount_cod = this.discount_cod ? "on" : "off";
     
     this.data.detail.time_discount_shop_mo = this.lieferung[0].time;
     this.data.detail.time_discount_shop_tu = this.lieferung[1].time;
@@ -144,6 +158,9 @@ export class DiscountPage implements OnInit {
     this.data.detail.time_discount_shop_2_sa = this.abholung[5].time;
     this.data.detail.time_discount_shop_2_su = this.abholung[6].time;
 
+    this.data.detail.dsmart_custom_discount_date.forEach((element) => {
+      element.date = moment(element.date).format("DD-MM-YYYY");
+    });
 
     this.storage.get('shops').then((shops) => {
       this.storage.get('active_shop').then((index) => {

@@ -1,8 +1,8 @@
 # AppBookingTCG
 # list device
 ionic cordova emulate --list
-# Iphone 13 pro max
-ionic cordova run ios -l --target=E6D6C540-09E7-4C93-BD54-5EAA8044932A
+# Iphone 14 pro max
+ionic cordova run ios -l --target=845D5226-29A3-4947-90D7-4FA4E198F3D8
 
 # Iphone 12 pro max
 ionic cordova run ios -l --target=E2699521-D88D-4CEE-B229-E122BC3C3D9C
